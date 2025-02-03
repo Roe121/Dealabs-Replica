@@ -1,0 +1,45 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+	<div class="container">
+		<a class="navbar-brand" href="{{ path('deal_list') }}">
+			<i class="bi bi-bag-heart-fill"></i>
+			<strong>Dealabs</strong>
+		</a>
+		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarNav">
+
+			<form id="search-form" class="d-flex" method="GET" action="{{ path('deal_list') }}">
+				<input type="text" id="search-input" class="form-control" placeholder="Rechercher un deal" name="q" value="{{ searchTerm }}" aria-label="Search">
+				<button class=" btn-outline-success mx-2 " type="submit">Rechercher</button>
+			</form>
+
+			<ul class="navbar-nav ms-auto">
+				<li class="nav-item d-flex align-items-center">
+					<i class="bi bi-tag"></i>
+					<a class="nav-link" href="{{ path('deal_list') }}">Tous les Deals</a>
+				</li>
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+						<i class="bi bi-tags me-2"></i>Catégories
+					</a>
+					<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+						{% for category in categories %}
+							<li>
+								<a class="dropdown-item" href="{{ path('deal_list', {'category': category.id}) }}">
+									{{ category.name }}
+								</a>
+							</li>
+						{% endfor %}
+					</ul>
+				</li>
+				<li class="nav-item d-flex align-items-center">
+					<i class="bi bi-person"></i>
+					<a class="nav-link" href="{{ path('deal_list') }}">Connexion ou Inscription</a>
+				</li>
+			</ul>
+
+
+		</div>
+	</div>
+</nav>

@@ -1,3 +1,118 @@
 body {
-    background-color: skyblue;
+  background-color: rgb(238, 238, 238);
+    
 }
+
+.navbar-nav .nav-link {
+  color: #333333; 
+  font-weight: 600;
+  margin: 0;
+}
+
+
+/* Assurer que la barre de recherche soit alignée à droite */
+#search-form {
+  margin: 0 auto;
+  max-width: 450px; /* Limite la largeur de la recherche */
+  width: 100%;
+}
+
+
+
+/* Optionnel : Espacement entre les éléments dans la deuxième ligne */
+.navbar-nav .nav-item {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+
+
+#search-input {
+  border-radius: 30px 0 0 30px; /* Coins arrondis */
+  padding-left: 35px;   /* Un peu d'espace pour le texte */
+  background: url('data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20width=%2216%22%20height=%2216%22%20fill=%22currentColor%22%20class=%22bi%20bi-search%22%20viewBox=%220%200%2016%2016%22%3E%3Cpath%20d=%22M11.742%2010.344a6.5%206.5%200%201%200-1.397%201.398h-.001q.044.06.098.115l3.85%203.85a1%201%200%200%200%201.415-1.414l-3.85-3.85a1%201%200%200%200-.115-.1zM12%206.5a5.5%205.5%200%201%201-11%200%205.5%205.5%200%200%201%2011%200%22/%3E%3C/svg%3E') no-repeat;
+  background-size: 18px;
+  background-position: 8px center; /* Déplacer l'icône plus à droite */
+}
+
+#search-input::placeholder {
+  color: #888; /* Couleur du placeholder */
+}
+
+button {
+  border-radius: 0 30px 30px 0; /* Rendre le bouton rond à droite */
+  background-color: transparent;
+}
+
+/* __________________________________________________________Style du footer_____________________________________________________ */
+
+/* Footer général */
+.footer {
+  background-color: #333;
+  padding: 40px 0;
+  color: #333;
+}
+
+.footer h5 {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.footer ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer ul li {
+  margin-bottom: 8px;
+}
+
+.footer ul li a {
+  text-decoration: none;
+  color: #555;
+}
+
+.footer ul li a:hover {
+  color: #28a745; /* Couleur du lien au survol */
+}
+
+/* Section newsletter */
+.footer form {
+  display: flex;
+  flex-direction: column;
+}
+
+.footer form input {
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.footer form button {
+  padding: 10px;
+  background-color: #28a745;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+}
+
+.footer form button:hover {
+  background-color: #218838; /* Changer la couleur au survol */
+}
+
+/* Footer bas (copyright) */
+.footer-bottom {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 14px;
+  color: #777;
+}
+
+.footer-bottom p {
+  margin: 0;
+}
+
+
