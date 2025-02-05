@@ -38,6 +38,10 @@ class Deal
     #[ORM\JoinTable(name: 'deal_category')]  
     private iterable $categories;
 
+    #[ORM\ManyToOne(inversedBy: 'deals')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
+
     public function __construct()
     {
         $this->categories = new ArrayCollection();
@@ -150,6 +154,17 @@ class Deal
     {
         $this->categories->removeElement($category);
 
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
         return $this;
     }
 }

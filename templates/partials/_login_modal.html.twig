@@ -1,0 +1,37 @@
+<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true" style="background: rgba(4, 9, 18, 0.35);">
+    <div class="modal-dialog modal-sm"> {# Modal plus étroite #}
+        <div class="modal-content border-0 shadow-lg rounded-4"> {# Bordures arrondies et ombre #}
+            <div class="modal-header border-0">
+                <h5 class="modal-title fw-bold mx-auto" id="loginModalLabel">Connexion</h5> {# Titre centré et en gras #}
+                <button type="button" class="btn-close position-absolute end-0 me-3" data-bs-dismiss="modal" aria-label="Fermer"></button>
+            </div>
+            <div class="modal-body py-4 px-4"> {# Marge intérieure en Y de 4 #}
+                <form method="post" action="{{ path('app_login') }}">
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-0"><i class="bi bi-envelope-at-fill"></i></span>
+                            <input type="email" name="email" class="form-control rounded-3" placeholder="Entrez votre email" required value="{{ last_username | default('') }}">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Mot de passe</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-0"><i class="bi bi-lock-fill"></i></span>
+                            <input type="password" name="password" class="form-control rounded-3" placeholder="Votre mot de passe" required>
+                        </div>
+                    </div>
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                    <button type="submit" class="btn btn-primary w-100 rounded-pill py-2 mt-2">
+                        <i class="bi bi-box-arrow-in-right"></i> Se connecter
+                    </button> {# Bouton arrondi avec icône #}
+
+                    <p class="text-center mt-3">
+                        <a href="{{ path('deal_list') }}" class="text-muted text-decoration-none">Mot de passe oublié ?</a>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

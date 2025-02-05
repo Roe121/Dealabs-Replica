@@ -12,6 +12,7 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use App\DataFixtures\CategoryFixtures;
+use App\Entity\User;
 
 class DealFixtures extends Fixture implements DependentFixtureInterface
 {
@@ -28,6 +29,10 @@ class DealFixtures extends Fixture implements DependentFixtureInterface
             $deal->setPrice(mt_rand(10, 100));
             $deal->addCategory($i % 2 === 0 ? $category1 : $category2);
             $deal->setEnable(true);
+
+            $userReference = $this->getReference('user_' . (($i % 2) + 1), User::class);
+            $deal->setUser($userReference);
+
             $manager->persist($deal);
         }
 
@@ -37,6 +42,7 @@ class DealFixtures extends Fixture implements DependentFixtureInterface
     public function getDependencies(): array
     {
         return [
+            UserFixtures::class,
             CategoryFixtures::class, // Ensure CategoryFixtures runs first
         ];
     }

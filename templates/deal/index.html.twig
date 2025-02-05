@@ -4,6 +4,20 @@
 {% endblock %}
 
 {% block body %}
+
+{% for label, messages in app.flashes %}
+    {% for message in messages %}
+        <script>
+            Swal.fire({
+                icon: '{{ label }}',  // success, error, warning, info
+                title: '{{ message }}',
+                showConfirmButton: false,
+                timer: 3000  // Disparaît après 3 secondes
+            });
+        </script>
+    {% endfor %}
+{% endfor %}
+
 	<div class="container my-5">
 		<h1 class="text-center mb-4">🔥 Les Meilleurs Deals 🔥</h1>
 
@@ -34,7 +48,7 @@
 									<span class="badge {{ deal.enable ? 'bg-success' : 'bg-danger' }}">
 										{{ deal.enable ? 'Actif' : 'Inactif' }}
 									</span>
-
+									{#Calcul doit obligatoirement se deplacer dans une twig extention ou autre car trop lourd et moche pour la page #}
 									<small class="text-muted">
 										{% set now = date() %}
 										{% set timeDiff = date(deal.createdAt).diff(now) %}
