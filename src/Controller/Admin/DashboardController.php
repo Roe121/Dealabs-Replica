@@ -11,6 +11,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use App\Controller\Admin\DealCrudController;
 use App\Entity\Category;
 use App\Entity\Deal;
+use App\Entity\User;
 
 class DashboardController extends AbstractDashboardController
 {
@@ -36,5 +37,7 @@ class DashboardController extends AbstractDashboardController
     yield MenuItem::linkToCrud('Deals', 'fa fa-tags', Deal::class);
 
     yield MenuItem::linkToCrud('Categories', 'fa fa-folder', Category::class);
+
+    yield MenuItem::linkToCrud('Utilisateurs', 'fa fa-users', User::class);
     }
 }
