@@ -10,6 +10,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Doctrine\ORM\EntityManagerInterface;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Report\Text;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
@@ -31,17 +32,24 @@ class UserCrudController extends AbstractCrudController
         return [
             IdField::new('id')->hideOnForm(),
             EmailField::new('email', 'Email'),
-            TextField::new('password', 'Mot de passe') // ✅ Ajout du champ mot de passe
-                ->setRequired($pageName === 'new') // Obligatoire seulement lors de la création
-                ->onlyOnForms(), // Visible uniquement dans le formulaire            TextField::new('username', 'Nom d\'utilisateur'),
+            TextField::new('password', 'Mot de passe')
+                ->setRequired($pageName === 'new') 
+                ->onlyOnForms(),           
             TextField::new('username', 'Nom d\'utilisateur'),
+            AssociationField::new('deals')
+                ->setFormTypeOption('choice_label', 'name')
+                ->formatValue(function ($value, $entity) {
+                    return implode(', ', $entity->getDeals()->map(function ($deal) {
+                        return $deal->getName();
+                    })->toArray());
+                }),
             ChoiceField::new('roles', 'Rôles')
                 ->setChoices([
                     'Utilisateur' => 'ROLE_USER',
                     'Administrateur' => 'ROLE_ADMIN',
                     'Super Admin' => 'ROLE_SUPER_ADMIN'
                 ])
-                ->allowMultipleChoices(), // Permet de sélectionner plusieurs rôles
+                ->allowMultipleChoices(),
         ];
     }
 
@@ -52,14 +60,13 @@ class UserCrudController extends AbstractCrudController
             return;
         }
 
-        // ✅ Hasher le mot de passe avant de l'enregistrer
         $plainPassword = $entityInstance->getPassword();
         if ($plainPassword) {
             $hashedPassword = $this->passwordHasher->hashPassword($entityInstance, $plainPassword);
             $entityInstance->setPassword($hashedPassword);
         }
 
-        $entityInstance->setRoles(array_values($entityInstance->getRoles())); // ✅ Enregistrer les rôles correctement
+        $entityInstance->setRoles(array_values($entityInstance->getRoles())); 
 
         parent::persistEntity($entityManager, $entityInstance);
     }
@@ -70,14 +77,14 @@ class UserCrudController extends AbstractCrudController
             return;
         }
 
-        // ✅ Hasher le mot de passe seulement s'il est modifié
+        
         $plainPassword = $entityInstance->getPassword();
-        if ($plainPassword && strlen($plainPassword) < 60) { // Vérifie si ce n'est pas déjà un hash
+        if ($plainPassword && strlen($plainPassword) < 60) { 
             $hashedPassword = $this->passwordHasher->hashPassword($entityInstance, $plainPassword);
             $entityInstance->setPassword($hashedPassword);
         }
 
-        $entityInstance->setRoles(array_values($entityInstance->getRoles())); // ✅ Enregistrer les rôles correctement
+        $entityInstance->setRoles(array_values($entityInstance->getRoles())); 
 
         parent::updateEntity($entityManager, $entityInstance);
     }

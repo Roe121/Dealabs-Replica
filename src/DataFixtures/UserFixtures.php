@@ -18,7 +18,20 @@ class UserFixtures extends Fixture
             ['username' => 'alice', 'email' => 'alice@example.com', 'password' => 'alice'],
             ['username' => 'bob', 'email' => 'bob@example.com', 'password' => 'bob'],
             ['username' => 'charlie', 'email' => 'charlie@example.com', 'password' => 'charlie'],
+            ['username' => 'david', 'email' => 'david@example.com', 'password' => 'david'],
+            ['username' => 'eve', 'email' => 'eve@example.com', 'password' => 'eve'],
+            ['username' => 'frank', 'email' => 'frank@example.com', 'password' => 'frank'],
+            ['username' => 'grace', 'email' => 'grace@example.com', 'password' => 'grace'],
+            ['username' => 'hannah', 'email' => 'hannah@example.com', 'password' => 'hannah'],
+            ['username' => 'ian', 'email' => 'ian@example.com', 'password' => 'ian'],
+            ['username' => 'jack', 'email' => 'jack@example.com', 'password' => 'jack'],
+            ['username' => 'kate', 'email' => 'kate@example.com', 'password' => 'kate'],
+            ['username' => 'leo', 'email' => 'leo@example.com', 'password' => 'leo'],
+            ['username' => 'mia', 'email' => 'mia@example.com', 'password' => 'mia'],
+            ['username' => 'nathan', 'email' => 'nathan@example.com', 'password' => 'nathan'],
+            ['username' => 'lezzarrami', 'email' => 'lezzarrami@gmail.com', 'password' => 'securepassword'],
         ];
+        
 
         foreach ($usersData as $index => $userData) {
             $user = new User();
@@ -32,10 +45,8 @@ class UserFixtures extends Fixture
 
             $manager->persist($user);
 
-            // Sauvegarde de la référence pour les deals
-            if ($index < 2) {
-                $this->addReference('user_' . ($index + 1), $user);
-            }
+            $this->addReference('user_' . ($index), $user);
+            
         }
 
         $manager->flush();

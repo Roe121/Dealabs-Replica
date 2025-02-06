@@ -4,106 +4,83 @@
 {% endblock %}
 
 {% block body %}
-
-{% for label, messages in app.flashes %}
-    {% for message in messages %}
-        <script>
-            Swal.fire({
-                icon: '{{ label }}',  // success, error, warning, info
-                title: '{{ message }}',
-                showConfirmButton: false,
-                timer: 3000  // Disparaît après 3 secondes
-            });
-        </script>
-    {% endfor %}
-{% endfor %}
-
 	<div class="container my-5">
 		<h1 class="text-center mb-4">🔥 Les Meilleurs Deals 🔥</h1>
-
-		<div class="mb-4 text-center">
-			<a href="{{ path('deal_list', {'filter': 'all'}) }}" class="btn {{ filter == 'all' ? 'btn-secondary' : 'btn-outline-secondary' }} mx-1">Tous les Deals</a>
-			<a href="{{ path('deal_list', {'filter': 'enabled'}) }}" class="btn {{ filter == 'enabled' ? 'btn-success' : 'btn-outline-success' }} mx-1">Activés</a>
-			<a href="{{ path('deal_list', {'filter': 'disabled'}) }}" class="btn {{ filter == 'disabled' ? 'btn-danger' : 'btn-outline-danger' }} mx-1">Désactivés</a>
-		</div>
 
 		{% if deals is not empty %}
 			<div class="row g-4">
 				{% for deal in deals %}
-					<div class="col-md-4">
-						<div class="card h-100 shadow-sm border-0">
-							<div class="card-body d-flex flex-column justify-content-between">
-								<h5 class="card-title">{{ deal.name }}</h5>
+					<div
+						class="card shadow-sm border-0 p-3 d-flex flex-row align-items-center">
+						<!-- Vote Box -->
+						<div class="d-flex flex-column align-items-center me-3">
+							<button class="btn btn-outline-danger btn-sm">▲</button>
+							<span class="fw-bold text-danger">{{ deal.hotScore }}</span>
+							<button class="btn btn-outline-primary btn-sm">▼</button>
+						</div>
 
-								<p class="card-text text-muted small">
-									{{ deal.description|length > 100 ? deal.description[:100] ~ '...' : deal.description }}
-								</p>
+						<!-- Image du deal -->
+						<div class="me-3">
+							<img src="{{ deal.image }}" alt="Deal Image" class="img-fluid rounded" style="width: 202px; height: 202px; object-fit: cover; border-radius: 12px;">
+						</div>
 
-								<div class="mb-2">
-									<strong class="text-danger fs-4">{{ deal.price }}
-										€</strong>
-								</div>
 
-								<div class="d-flex justify-content-between align-items-center mb-2">
-									<span class="badge {{ deal.enable ? 'bg-success' : 'bg-danger' }}">
-										{{ deal.enable ? 'Actif' : 'Inactif' }}
-									</span>
-									{#Calcul doit obligatoirement se deplacer dans une twig extention ou autre car trop lourd et moche pour la page #}
-									<small class="text-muted">
-										{% set now = date() %}
-										{% set timeDiff = date(deal.createdAt).diff(now) %}
+						<!-- Contenu du deal -->
+						<div class="flex-grow-1">
+							<h5 class="mb-1">
+								<a href="{{ path('deal_show', {'id': deal.id}) }}" class="text-black text-decoration-none">
+									{{ deal.name }}
+								</a>
+							</h5>
+							<p class="text-muted small mb-1">
+								<s class="text-secondary">{{ deal.originalPrice }}€</s>
+								<strong class="text-danger fs-5">{{ deal.price }}€</strong>
+								<span class="badge bg-success">-{{ ((1 - (deal.price / deal.originalPrice)) * 100)|round }}%</span>
+							</p>
+							<p class="small text-muted mb-2">Vendu sur
+								{{ deal.merchant.name }}</p>
+							<p class="text-muted small mb-2">{{ deal.description|length > 100 ? deal.description[:100] ~ '...' : deal.description }}</p>
 
-										{% if timeDiff.y > 0 %}
-											Posté il y a
-											{{ timeDiff.y }}
-											an{{ timeDiff.y > 1 ? 's' : '' }}
-										{% elseif timeDiff.m > 0 %}
-											Posté il y a
-											{{ timeDiff.m }}
-											mois
-										{% elseif timeDiff.d > 0 %}
-											Posté il y a
-											{{ timeDiff.d }}
-											jour{{ timeDiff.d > 1 ? 's' : '' }}
-										{% elseif timeDiff.h > 0 %}
-											Posté il y a
-											{{ timeDiff.h }}
-											heure{{ timeDiff.h > 1 ? 's' : '' }}
-										{% elseif timeDiff.i > 0 %}
-											Posté il y a
-											{{ timeDiff.i }}
-											minute{{ timeDiff.i > 1 ? 's' : '' }}
-										{% else %}
-											Posté il y a quelques secondes
-										{% endif %}
-									</small>
-								</div>
+							<!-- Infos complémentaires -->
+							<div class="d-flex align-items-center">
+								<small class="me-3 text-muted">💬
+									{{ deal.comments|length }}</small>
+								<small class="me-3 text-muted">🔗 Partagé par
+									{{ deal.user.username }}</small>
 
-								<div class="mb-2">
-									{% if deal.categories is not empty %}
-										<small class="text-muted">Catégories:
-											{% for category in deal.categories %}
-												<span class="badge bg-info text-white">{{ category.name }}</span>
-											{% endfor %}
-										</small>
+								{% set now = date() %}
+								{% set timeDiff = date(deal.createdAt).diff(now) %}
+								<small class="text-muted">
+									{% if timeDiff.y > 0 %}
+										Posté il y a
+										{{ timeDiff.y }}
+										an{{ timeDiff.y > 1 ? 's' : '' }}
+									{% elseif timeDiff.m > 0 %}
+										Posté il y a
+										{{ timeDiff.m }}
+										mois
+									{% elseif timeDiff.d > 0 %}
+										Posté il y a
+										{{ timeDiff.d }}
+										jour{{ timeDiff.d > 1 ? 's' : '' }}
+									{% elseif timeDiff.h > 0 %}
+										Posté il y a
+										{{ timeDiff.h }}
+										heure{{ timeDiff.h > 1 ? 's' : '' }}
+									{% elseif timeDiff.i > 0 %}
+										Posté il y a
+										{{ timeDiff.i }}
+										minute{{ timeDiff.i > 1 ? 's' : '' }}
 									{% else %}
-										<small class="text-muted">Aucune catégorie</small>
+										Posté il y a quelques secondes
 									{% endif %}
-								</div>
-
-								<div class="mb-3 text-muted">
-									<small class="text-muted">Popularité:</small>
-									<!-- Popularité statique (flammes 🔥) -->
-									<span class="text-warning">
-										🔥🔥🔥🔥🔥
-									</span>
-								</div>
-
-								<button type="button" class="btn btn-outline-success w-50 mx-auto d-block" onclick="window.location.href='{{ path('deal_show', {'id': deal.id}) }}'">
-									Voir le deal
-									<i class="bi bi-box-arrow-up-right mx-1"></i>
-								</button>
+								</small>
 							</div>
+						</div>
+
+						<!-- Bouton Voir le deal -->
+						<div>
+							<a href="{{ deal.dealUrl }}" target="_blank" class="btn btn-primary">Voir le deal 🔗</a>
 						</div>
 					</div>
 				{% endfor %}

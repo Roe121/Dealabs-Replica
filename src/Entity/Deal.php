@@ -2,8 +2,10 @@
 
 namespace App\Entity;
 
+use App\Enum\DealStatus;
 use App\Repository\DealRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -42,9 +44,41 @@ class Deal
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
+    /**
+     * @var Collection<int, Comment>
+     */
+    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'deal', orphanRemoval: true)]
+    private Collection $comments;
+
+    #[ORM\ManyToOne(inversedBy: 'deals')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Merchant $merchant = null;
+
+    #[ORM\Column]
+    private ?int $original_price = null;
+
+    #[ORM\Column(length: 2083)]
+    private ?string $deal_url = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $image = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $start_at = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $expired_at = null;
+
+    #[ORM\Column(enumType: DealStatus::class)]
+    private ?DealStatus $status = null;
+
+    #[ORM\Column]
+    private ?int $hot_score = null;
+
     public function __construct()
     {
         $this->categories = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -165,6 +199,132 @@ class Deal
     public function setUser(?User $user): static
     {
         $this->user = $user;
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Comment>
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comment $comment): static
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments->add($comment);
+            $comment->setDeal($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comment $comment): static
+    {
+        if ($this->comments->removeElement($comment)) {
+            // set the owning side to null (unless already changed)
+            if ($comment->getDeal() === $this) {
+                $comment->setDeal(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getMerchant(): ?Merchant
+    {
+        return $this->merchant;
+    }
+
+    public function setMerchant(?Merchant $merchant): static
+    {
+        $this->merchant = $merchant;
+
+        return $this;
+    }
+
+    public function getOriginalPrice(): ?int
+    {
+        return $this->original_price;
+    }
+
+    public function setOriginalPrice(int $original_price): static
+    {
+        $this->original_price = $original_price;
+
+        return $this;
+    }
+
+    public function getDealUrl(): ?string
+    {
+        return $this->deal_url;
+    }
+
+    public function setDealUrl(string $deal_url): static
+    {
+        $this->deal_url = $deal_url;
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): static
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    public function getStartAt(): ?\DateTimeImmutable
+    {
+        return $this->start_at;
+    }
+
+    public function setStartAt(?\DateTimeImmutable $start_at): static
+    {
+        $this->start_at = $start_at;
+
+        return $this;
+    }
+
+    public function getExpiredAt(): ?\DateTimeImmutable
+    {
+        return $this->expired_at;
+    }
+
+    public function setExpiredAt(?\DateTimeImmutable $expired_at): static
+    {
+        $this->expired_at = $expired_at;
+
+        return $this;
+    }
+
+    public function getStatus(): ?DealStatus
+    {
+        return $this->status;
+    }
+
+    public function setStatus(DealStatus $status): static
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    public function getHotScore(): ?int
+    {
+        return $this->hot_score;
+    }
+
+    public function setHotScore(int $hot_score): static
+    {
+        $this->hot_score = $hot_score;
+
         return $this;
     }
 }
