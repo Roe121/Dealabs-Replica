@@ -43,11 +43,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var Collection<int, Comment>
      */
     #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'user', orphanRemoval: true)]
-    private Collection $yes;
+    private Collection $comments;
 
     public function __construct()
     {
-        $this->yes = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -154,15 +154,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @return Collection<int, Comment>
      */
-    public function getYes(): Collection
+    public function getComments(): Collection
     {
-        return $this->yes;
+        return $this->comments;
     }
 
     public function addYe(Comment $ye): static
     {
-        if (!$this->yes->contains($ye)) {
-            $this->yes->add($ye);
+        if (!$this->comments->contains($ye)) {
+            $this->comments->add($ye);
             $ye->setUser($this);
         }
 

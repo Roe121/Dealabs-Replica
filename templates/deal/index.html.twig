@@ -4,86 +4,154 @@
 {% endblock %}
 
 {% block body %}
-	<div class="container my-5">
-		<h1 class="text-center mb-4">🔥 Les Meilleurs Deals 🔥</h1>
+
+	{% for label, messages in app.flashes %}
+		{% for message in messages %}
+			<script>
+				Swal.fire({
+icon: '{{ label }}', // success, error, warning, info
+title: '{{ message }}',
+showConfirmButton: false,
+timer: 3000 // Disparaît après 3 secondes
+});
+			</script>
+		{% endfor %}
+	{% endfor %}
+
+
+	<div class="container my-5 px-5">
+		<h1 class="mb-4">Tous les deals</h1>
 
 		{% if deals is not empty %}
-			<div class="row g-4">
-				{% for deal in deals %}
-					<div
-						class="card shadow-sm border-0 p-3 d-flex flex-row align-items-center">
-						<!-- Vote Box -->
-						<div class="d-flex flex-column align-items-center me-3">
-							<button class="btn btn-outline-danger btn-sm">▲</button>
-							<span class="fw-bold text-danger">{{ deal.hotScore }}</span>
-							<button class="btn btn-outline-primary btn-sm">▼</button>
-						</div>
+			<div
+				class="row g-4">
 
-						<!-- Image du deal -->
-						<div class="me-3">
-							<img src="{{ deal.image }}" alt="Deal Image" class="img-fluid rounded" style="width: 202px; height: 202px; object-fit: cover; border-radius: 12px;">
-						</div>
+				<!-- Colonne principale (75%) -->
+				<div class="col-md-9">
+					{% for deal in deals %}
+						<div
+							class="card shadow-sm border-0 p-3 d-flex flex-row align-items-center mb-4">
+							<!-- Vote Box -->
+							<div class="d-flex flex-column align-items-center me-3">
+								<button class="btn btn-outline-danger btn-sm">▲</button>
+								<span class="fw-bold text-danger">{{ deal.hotScore }}</span>
+								<button class="btn btn-outline-primary btn-sm">▼</button>
+							</div>
 
+							<!-- Image du deal -->
+							<div class="me-3">
+								<img src="{{ deal.image }}" alt="Deal Image" class="img-fluid rounded" style="width: 202px; height: 202px; object-fit: cover; border-radius: 12px;">
+							</div>
 
-						<!-- Contenu du deal -->
-						<div class="flex-grow-1">
-							<h5 class="mb-1">
-								<a href="{{ path('deal_show', {'id': deal.id}) }}" class="text-black text-decoration-none">
-									{{ deal.name }}
-								</a>
-							</h5>
-							<p class="text-muted small mb-1">
-								<s class="text-secondary">{{ deal.originalPrice }}€</s>
-								<strong class="text-danger fs-5">{{ deal.price }}€</strong>
-								<span class="badge bg-success">-{{ ((1 - (deal.price / deal.originalPrice)) * 100)|round }}%</span>
-							</p>
-							<p class="small text-muted mb-2">Vendu sur
-								{{ deal.merchant.name }}</p>
-							<p class="text-muted small mb-2">{{ deal.description|length > 100 ? deal.description[:100] ~ '...' : deal.description }}</p>
+							<!-- Contenu du deal -->
+							<div class="flex-grow-1">
+								<h5 class="mb-1">
+									<a href="{{ path('deal_show', {'id': deal.id}) }}" class="text-black text-decoration-none">
+										{{ deal.name }}
+									</a>
+								</h5>
+								<p class="text-muted small mb-1">
+									<strong class="text-danger fs-5">{{ deal.price }}€</strong>
+									<s class="text-secondary">{{ deal.originalPrice }}€</s>
+									<span class="badge bg-success fs-6 ">-{{ ((1 - (deal.price / deal.originalPrice)) * 100)|round }}%</span>
+								</p>
+								<p class="small text-muted mb-2">Vendu sur
+									{{ deal.merchant.name }}</p>
+								<p class="text-muted small mb-2">{{ deal.description|length > 100 ? deal.description[:100] ~ '...' : deal.description }}</p>
 
-							<!-- Infos complémentaires -->
-							<div class="d-flex align-items-center">
-								<small class="me-3 text-muted">💬
-									{{ deal.comments|length }}</small>
-								<small class="me-3 text-muted">🔗 Partagé par
-									{{ deal.user.username }}</small>
+								<!-- Infos complémentaires -->
+								<div class="d-flex align-items-center">
+									<small class="me-3 text-muted">
+										<i class="bi bi-chat"></i>
+										{{ deal.comments|length }}</small>
+									<small class="me-3 text-muted">
+										<i class="bi bi-share"></i>
+										Partagé par
+										{{ deal.user.username }}</small>
 
-								{% set now = date() %}
-								{% set timeDiff = date(deal.createdAt).diff(now) %}
-								<small class="text-muted">
-									{% if timeDiff.y > 0 %}
-										Posté il y a
-										{{ timeDiff.y }}
-										an{{ timeDiff.y > 1 ? 's' : '' }}
-									{% elseif timeDiff.m > 0 %}
-										Posté il y a
-										{{ timeDiff.m }}
-										mois
-									{% elseif timeDiff.d > 0 %}
-										Posté il y a
-										{{ timeDiff.d }}
-										jour{{ timeDiff.d > 1 ? 's' : '' }}
-									{% elseif timeDiff.h > 0 %}
-										Posté il y a
-										{{ timeDiff.h }}
-										heure{{ timeDiff.h > 1 ? 's' : '' }}
-									{% elseif timeDiff.i > 0 %}
-										Posté il y a
-										{{ timeDiff.i }}
-										minute{{ timeDiff.i > 1 ? 's' : '' }}
-									{% else %}
-										Posté il y a quelques secondes
-									{% endif %}
-								</small>
+									{% set now = date() %}
+									{% set timeDiff = date(deal.createdAt).diff(now) %}
+									<small class="text-muted">
+										{% if timeDiff.y > 0 %}
+											Posté il y a
+											{{ timeDiff.y }}
+											an{{ timeDiff.y > 1 ? 's' : '' }}
+										{% elseif timeDiff.m > 0 %}
+											Posté il y a
+											{{ timeDiff.m }}
+											mois
+										{% elseif timeDiff.d > 0 %}
+											Posté il y a
+											{{ timeDiff.d }}
+											jour{{ timeDiff.d > 1 ? 's' : '' }}
+										{% elseif timeDiff.h > 0 %}
+											Posté il y a
+											{{ timeDiff.h }}
+											heure{{ timeDiff.h > 1 ? 's' : '' }}
+										{% elseif timeDiff.i > 0 %}
+											Posté il y a
+											{{ timeDiff.i }}
+											minute{{ timeDiff.i > 1 ? 's' : '' }}
+										{% else %}
+											Posté il y a quelques secondes
+										{% endif %}
+									</small>
+								</div>
+							</div>
+
+							<!-- Bouton Voir le deal -->
+							<div>
+								<a href="{{ deal.dealUrl }}" target="_blank" class="btn btn-primary">Voir le deal <i class="bi bi-box-arrow-up-right mx-2"></i>
+</a>
 							</div>
 						</div>
+					{% endfor %}
+				</div>
 
-						<!-- Bouton Voir le deal -->
-						<div>
-							<a href="{{ deal.dealUrl }}" target="_blank" class="btn btn-primary">Voir le deal 🔗</a>
-						</div>
+				<!-- Sidebar (25%) -->
+				<div class="col-md-3">
+					<div class="card p-3 shadow-sm">
+						<h5 class="mb-3">Deals les + hot</h5>
+						{% set hotDeals = deals|sort((a, b) => b.hotScore <=> a.hotScore)[:3] %}
+						{% for deal in hotDeals %}
+							<div class="d-flex align-items-center mb-3">
+								<img src="{{ deal.image }}" alt="Hot Deal Image" class="rounded" style="width: 84px; height: 84px; object-fit: cover; border-radius: 8px;">
+								<div class="ms-3 w-100">
+
+									<h6 class="mb-0">
+										<a href="{{ path('deal_show', {'id': deal.id}) }}" class="text-black text-decoration-none">
+											<span class="fw-bold text-danger">{{ deal.hotScore }}°</span>
+											{{ deal.name }}
+										</a>
+									</h6>
+									<h6 class="text-danger text-end bolder ">{{ deal.price }}€</h6>
+								</div>
+							</div>
+						{% endfor %}
 					</div>
-				{% endfor %}
+
+
+					<!-- Sidebar "Activité" (Seulement si utilisateur connecté) -->
+					{% if app.user %}
+						<div class="card p-3 shadow-sm mt-4">
+							<h5 class="mb-3">Activité</h5>
+							{% for comment in app.user.comments|slice(0,5) %}
+								<div class="d-flex align-items-center mb-2">
+									<img src="{{ comment.deal.image }}" alt="Activity Deal" class="rounded" style="width: 54px; height: 54px; object-fit: cover;">
+									<div class="ms-2">
+										<small class="text-muted">Vous avez commenté le deal</small>
+										<a href="{{ path('deal_show', {'id': comment.deal.id}) }}" class="d-block text-black text-decoration-none small">{{ comment.deal.name }}</a>
+										<small class="text-muted">
+											<i class="bi bi-chat"></i>
+											{{ comment.createdAt|date('d F Y') }}</small>
+									</div>
+								</div>
+							{% endfor %}
+						</div>
+						<!-- Fin du card Activité -->
+					{% endif %}
+				</div>
+
 			</div>
 		{% else %}
 			<div class="alert alert-info text-center" role="alert">
@@ -91,4 +159,5 @@
 			</div>
 		{% endif %}
 	</div>
+
 {% endblock %}
