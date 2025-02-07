@@ -34,7 +34,7 @@ timer: 3000 // Disparaît après 3 secondes
 							<!-- Vote Box -->
 							<div class="d-flex flex-column align-items-center me-3">
 								<button class="btn btn-outline-danger btn-sm">▲</button>
-								<span class="fw-bold text-danger">{{ deal.hotScore }}</span>
+								<span class="fw-bold text-danger">{{ deal.hotScore }}°</span>
 								<button class="btn btn-outline-primary btn-sm">▼</button>
 							</div>
 
@@ -101,14 +101,15 @@ timer: 3000 // Disparaît après 3 secondes
 
 							<!-- Bouton Voir le deal -->
 							<div>
-								<a href="{{ deal.dealUrl }}" target="_blank" class="btn btn-primary">Voir le deal <i class="bi bi-box-arrow-up-right mx-2"></i>
-</a>
+								<a href="{{ deal.dealUrl }}" target="_blank" class="btn btn-deal rounded-pill">Voir le deal
+									<i class="bi bi-box-arrow-up-right mx-2"></i>
+								</a>
 							</div>
 						</div>
 					{% endfor %}
 				</div>
 
-				<!-- Sidebar (25%) -->
+				<!-- Sidebar "Deals les + hot" -->
 				<div class="col-md-3">
 					<div class="card p-3 shadow-sm">
 						<h5 class="mb-3">Deals les + hot</h5>
@@ -148,8 +149,54 @@ timer: 3000 // Disparaît après 3 secondes
 								</div>
 							{% endfor %}
 						</div>
-						<!-- Fin du card Activité -->
 					{% endif %}
+
+					<!-- Sidebar "Discussions" (Tous le monde peut voir) -->
+					<div class="card p-3 shadow-sm mt-4">
+						<h5 class="mb-3">Discussions
+							<span class="text-primary">▾</span>
+						</h5>
+
+						<!-- Discussion 1 -->
+						<div class="d-flex align-items-center mb-2">
+							<img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User Avatar" class="rounded-circle" style="width: 26px; height: 26px; object-fit: cover;">
+							<div class="ms-2">
+								<a href="#" class="d-block text-black text-decoration-none small fw-bold">ClemS</a>
+								<a href="#" class="d-block text-black text-decoration-none small">Trade Republic lance un compte courant...</a>
+								<small class="text-muted">
+									<i class="bi bi-chat"></i>
+									354
+								</small>
+							</div>
+						</div>
+
+						<!-- Discussion 2 -->
+						<div class="d-flex align-items-center mb-2">
+							<img src="https://randomuser.me/api/portraits/women/45.jpg" alt="User Avatar" class="rounded-circle" style="width: 26px; height: 26px; object-fit: cover;">
+							<div class="ms-2">
+								<a href="#" class="d-block text-black text-decoration-none small fw-bold">nrslr</a>
+								<a href="#" class="d-block text-black text-decoration-none small">LeBonCoin : À quand la livraison à 0,99€ ?</a>
+								<small class="text-muted">
+									<i class="bi bi-chat"></i>
+									53
+								</small>
+							</div>
+						</div>
+
+						<!-- Discussion 3 -->
+						<div class="d-flex align-items-center mb-2">
+							<img src="https://randomuser.me/api/portraits/men/12.jpg" alt="User Avatar" class="rounded-circle" style="width: 26px; height: 26px; object-fit: cover;">
+							<div class="ms-2">
+								<a href="#" class="d-block text-black text-decoration-none small fw-bold">El_Maak</a>
+								<a href="#" class="d-block text-black text-decoration-none small">[Happy you !] Ces sites, magasins et restaurants qui offrent un cadeau...</a>
+								<small class="text-muted">
+									<i class="bi bi-chat"></i>
+									206
+								</small>
+							</div>
+						</div>
+					</div>
+
 				</div>
 
 			</div>

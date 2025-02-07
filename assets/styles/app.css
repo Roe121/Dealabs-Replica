@@ -2,7 +2,7 @@ body {
   background-color: rgb(238, 238, 238);
     
 }
-
+/* __________________________________________________________Style de la barre de navigation_____________________________________________________ */
 .navbar-nav .nav-link {
   color: #333333; 
   font-weight: 600;
@@ -115,4 +115,22 @@ button {
   margin: 0;
 }
 
+/* __________________________________________________________Style de la page d'accueil_____________________________________________________ */
 
+
+.btn-deal {
+  background-color: #00a1bf;
+  border-color: #00a1bf;
+  color: white;
+}
+
+.btn-deal:hover {
+  background-color: #008a9f; /* Une teinte légèrement plus foncée pour l'effet hover */
+  border-color: #008a9f;
+  color: white;
+}
+
+/* __________________________________________________________Style de la page d'un deal'_____________________________________________________ */
+.px-6 { padding-left: 6rem !important; padding-right: 6rem !important; }
+.px-7 { padding-left: 7rem !important; padding-right: 7rem !important; }
+.px-8 { padding-left: 8rem !important; padding-right: 8rem !important; }
