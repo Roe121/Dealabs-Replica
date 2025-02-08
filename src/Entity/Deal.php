@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Enum\DealStatus;
+use App\Enum\DealStatusEnum;
 use App\Repository\DealRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -25,10 +25,10 @@ class Deal
     private ?string $description = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $created_at = null;
+    private ?\DateTimeInterface $createdAt = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $updated_at = null;
+    private ?\DateTimeInterface $updatedAt = null;
 
     #[ORM\Column]
     private ?float $price = null;
@@ -55,25 +55,28 @@ class Deal
     private ?Merchant $merchant = null;
 
     #[ORM\Column]
-    private ?int $original_price = null;
+    private ?int $originalPrice = null;
 
     #[ORM\Column(length: 2083)]
-    private ?string $deal_url = null;
+    private ?string $url = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $image = null;
 
     #[ORM\Column(nullable: true)]
-    private ?\DateTimeImmutable $start_at = null;
+    private ?\DateTimeImmutable $startAt = null;
 
     #[ORM\Column(nullable: true)]
-    private ?\DateTimeImmutable $expired_at = null;
+    private ?\DateTimeImmutable $expiredAt = null;
 
-    #[ORM\Column(enumType: DealStatus::class)]
-    private ?DealStatus $status = null;
+    #[ORM\Column(enumType: DealStatusEnum::class)]
+    private ?DealStatusEnum $status = null;
 
     #[ORM\Column]
-    private ?int $hot_score = null;
+    private ?int $hotScore = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $deliveryPrice = null;
 
     public function __construct()
     {
@@ -112,24 +115,24 @@ class Deal
 
     public function getCreatedAt(): ?\DateTimeInterface
     {
-        return $this->created_at;
+        return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $created_at): static
+    public function setCreatedAt(\DateTimeInterface $createdAt): static
     {
-        $this->created_at = $created_at;
+        $this->createdAt = $createdAt;
 
         return $this;
     }
 
     public function getUpdatedAt(): ?\DateTimeInterface
     {
-        return $this->updated_at;
+        return $this->updatedAt;
     }
 
-    public function setUpdatedAt(?\DateTimeInterface $updated_at): static
+    public function setUpdatedAt(?\DateTimeInterface $updatedAt): static
     {
-        $this->updated_at = $updated_at;
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }
@@ -161,13 +164,13 @@ class Deal
     #[ORM\PrePersist]
     public function prePersist(): void
     {
-        $this->created_at = new \DateTime();
+        $this->createdAt = new \DateTime();
     }
 
     #[ORM\PreUpdate]
     public function preUpdate(): void
     {
-        $this->updated_at = new \DateTime();
+        $this->updatedAt = new \DateTime();
     }
 
     public function getCategories(): iterable
@@ -246,24 +249,24 @@ class Deal
 
     public function getOriginalPrice(): ?int
     {
-        return $this->original_price;
+        return $this->originalPrice;
     }
 
-    public function setOriginalPrice(int $original_price): static
+    public function setOriginalPrice(int $originalPrice): static
     {
-        $this->original_price = $original_price;
+        $this->originalPrice = $originalPrice;
 
         return $this;
     }
 
     public function getDealUrl(): ?string
     {
-        return $this->deal_url;
+        return $this->url;
     }
 
-    public function setDealUrl(string $deal_url): static
+    public function setDealUrl(string $url): static
     {
-        $this->deal_url = $deal_url;
+        $this->url = $url;
 
         return $this;
     }
@@ -282,34 +285,34 @@ class Deal
 
     public function getStartAt(): ?\DateTimeImmutable
     {
-        return $this->start_at;
+        return $this->startAt;
     }
 
-    public function setStartAt(?\DateTimeImmutable $start_at): static
+    public function setStartAt(?\DateTimeImmutable $startAt): static
     {
-        $this->start_at = $start_at;
+        $this->startAt = $startAt;
 
         return $this;
     }
 
     public function getExpiredAt(): ?\DateTimeImmutable
     {
-        return $this->expired_at;
+        return $this->expiredAt;
     }
 
-    public function setExpiredAt(?\DateTimeImmutable $expired_at): static
+    public function setExpiredAt(?\DateTimeImmutable $expiredAt): static
     {
-        $this->expired_at = $expired_at;
+        $this->expiredAt = $expiredAt;
 
         return $this;
     }
 
-    public function getStatus(): ?DealStatus
+    public function getStatus(): ?DealStatusEnum
     {
         return $this->status;
     }
 
-    public function setStatus(DealStatus $status): static
+    public function setStatus(DealStatusEnum $status): static
     {
         $this->status = $status;
 
@@ -318,12 +321,24 @@ class Deal
 
     public function getHotScore(): ?int
     {
-        return $this->hot_score;
+        return $this->hotScore;
     }
 
-    public function setHotScore(int $hot_score): static
+    public function setHotScore(int $hotScore): static
     {
-        $this->hot_score = $hot_score;
+        $this->hotScore = $hotScore;
+
+        return $this;
+    }
+
+    public function getDeliveryPrice(): ?int
+    {
+        return $this->deliveryPrice;
+    }
+
+    public function setDeliveryPrice(int $deliveryPrice): static
+    {
+        $this->deliveryPrice = $deliveryPrice;
 
         return $this;
     }

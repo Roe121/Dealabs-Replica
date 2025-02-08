@@ -49,12 +49,20 @@ final class DealController extends AbstractController
         ]);
     }
 
-    #[Route('/deal/{id}', name: 'deal_show', methods: ['GET'])]
-    public function deal_show(int $id, DealRepository $dealRepository): Response
+    #[Route('/deal/{id}', name: 'deal_show')]
+    public function show(int $id, DealRepository $dealRepository): Response
     {
         $deal = $dealRepository->find($id);
+
+        // Récupérer les catégories du deal
+        $categories = $deal->getCategories();
+
+        // Récupérer des deals similaires par catégories (exclure le deal actuel)
+        $relatedDeals = $dealRepository->findRelatedDealsByCategories($categories, $deal->getId());
+
         return $this->render('deal/show.html.twig', [
             'deal' => $deal,
+            'relatedDeals' => $relatedDeals,
         ]);
     }
 }

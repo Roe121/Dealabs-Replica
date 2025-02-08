@@ -14,7 +14,7 @@
 
 			<form id="search-form" class="d-flex" method="GET" action="{{ path('deal_list') }}">
 				<input type="text" id="search-input" class="form-control" placeholder="Rechercher un deal" name="q" value="{{ searchTerm }}" aria-label="Search">
-				<button class=" btn-outline-success mx-2 " type="submit">Rechercher</button>
+				<button class=" btn-deal mx-2 " type="submit">Rechercher</button>
 			</form>
 
 			<ul class="navbar-nav ms-auto">
@@ -38,8 +38,11 @@
 				</li>
 				{% if app.user %}
 					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-							<i class="bi bi-person-circle me-2"></i>Bonjour,
+						<a
+							class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+							<!-- ✅ Image de profil à la place de l'icône -->
+							<img src="{{ app.user.image }}" alt="Profil" class="rounded-circle me-2" style="width: 24px; height: 24px; object-fit: cover;">
+							Bonjour,
 							{{ app.user.username }}
 						</a>
 						<ul class="dropdown-menu" aria-labelledby="userDropdown">

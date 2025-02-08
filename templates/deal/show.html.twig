@@ -7,32 +7,75 @@
 
 {% block body %}
 	<div
-		class="container mt-4 px-8">
+		class="container mt-4 px-11">
 		<!-- SECTION 1 : LE DEAL -->
-		<div class="card shadow-sm p-3">
+		<div class="card  position-relative">
 			<div
-				class="d-flex align-items-start">
-				<!-- Image du deal -->
-				<div class="p-3 bg-white rounded" style="display: inline-block;">
-					<img src="{{ deal.image }}" alt="{{ deal.name }}" class="rounded" style="width: 304px; height: 304px; object-fit: cover;">
-				</div>
-				<div
-					class="ms-3">
-					<!-- Infos deal -->
-					<h3 class="fw-bold">{{ deal.name }}</h3>
-					<div class="d-flex align-items-center">
-						<span class="text-danger fs-4 fw-bold me-2">{{ deal.price|number_format(2, ',', ' ') }}€</span>
-						{% if deal.originalPrice %}
-							<span class="text-muted text-decoration-line-through me-2">{{ deal.originalPrice|number_format(2, ',', ' ') }}€</span>
-							<span class="badge bg-success">-{{ ((1 - (deal.price / deal.originalPrice)) * 100)|round }}%</span>
-						{% endif %}
-					</div>
+				class="d-flex align-items-start gap-3 border shadow-sm rounded-3 p-4">
 
-					<div class="mt-3">
-						<a href="{{ deal.dealUrl }}" target="_blank" class="btn btn-deal rounded-pill w-50">
-							Voir le deal
-							<i class="bi bi-box-arrow-up-right"></i>
+				<!-- Vote Box -->
+				<div class="d-flex flex-column align-items-center me-3 align-self-center">
+					<button class="btn btn-deal btn-sm">▲</button>
+					<span class="fw-bold text-danger">{{ deal.hotScore }}°</span>
+					<button class="btn btn-deal btn-sm">▼</button>
+				</div>
+
+				<!-- Image du deal -->
+				<div class="me-3">
+					<img src="{{ deal.image }}" alt="Deal Image" class="img-fluid rounded" style="width: 304px; height: 304px; object-fit: cover; border-radius: 12px;">
+				</div>
+
+				<!-- Contenu du deal -->
+				<div
+					class="flex-grow-1 align-self-center">
+
+					<!-- Titre du deal -->
+					<div class="d-flex justify-content-between align-items-center mb-1">
+						<a href="{{ path('deal_show', {'id': deal.id}) }}" class="text-black text-decoration-none fw-bold fs-4">
+							{{ deal.name }}
 						</a>
+					</div>
+					<span class="badge badge bg-light text-grey">
+						Posté
+						{{ deal.createdAt|ago }}
+					</span>
+
+					<!-- Prix et informations du deal -->
+					<p class="text-muted small mb-1 d-flex align-items-center flex-wrap gap-2">
+						<strong class="text-danger fs-2">{{ deal.price }}€</strong>
+						<s class="text-secondary fs-4">{{ deal.originalPrice }}€</s>
+						<span class="badge bg-success fs-6">-{{ ((1 - (deal.price / deal.originalPrice)) * 100)|round }}%</span>
+
+					</p>
+
+					<!-- 🏪 Disponible chez le marchand -->
+						<span>
+						<!-- 🚚 Livraison -->
+						<i class="bi bi-truck text-secondary "></i>
+						<span>{{ deal.deliveryPrice is null or deal.deliveryPrice == 0 ? 'Gratuit' : deal.deliveryPrice ~ '€' }}</span>
+						| Disponible chez
+							<a href="{{ path('merchant_show', {'id': deal.merchant.id}) }}" class="fw-bold text-black text-decoration-none">
+								{{ deal.merchant.name }}
+							</a>
+						</span>
+
+					<!-- Infos complémentaires -->
+					<div class="d-flex align-items-center mt-auto ">
+						<p class="me-3">
+							<a href="{{ path('deal_show', {'id': deal.id}) }}#comments" class="text-decoration-none text-black d-flex align-items-center">
+								<i class="bi bi-chat me-1"></i>
+								{{ deal.comments|length }}
+							</a>
+						</p>
+						<p class="me-3">
+							<i class="bi bi-share"></i>
+						</p>
+						<!-- Bouton Voir le deal -->
+						<div class="ms-auto">
+							<a href="{{ deal.dealUrl }}" target="_blank" class="btn btn-deal rounded-pill">Voir le deal
+								<i class="bi bi-box-arrow-up-right mx-2"></i>
+							</a>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -44,15 +87,47 @@
 			<p class="text-muted">{{ deal.description }}</p>
 		</div>
 
-		<!-- SECTION 3 : COMMENTAIRES -->
+		<!-- SECTION 3 : DEALS SIMILAIRES -->
+
 		<div class="card shadow-sm p-3 my-4">
+			<h5 class="fw-bold m-3">Vous aimerez aussi</h5>
+			<div class="d-flex overflow-auto gap-3">
+				{% for relatedDeal in relatedDeals %}
+					<div class="text-center" style="min-width: 140px;">
+						<div class="position-relative">
+							<span class="badge bg-danger position-absolute top-0 end-0 m-1">{{ relatedDeal.hotScore }}°</span>
+							<a href="{{ path('deal_show', {'id': relatedDeal.id}) }}">
+								<img src="{{ relatedDeal.image }}" alt="{{ relatedDeal.name }}" style="width: 140px; height: 140px; object-fit: cover;" class="rounded shadow-sm">
+							</a>
+						</div>
+
+						<a href="{{ path('deal_show', {'id': relatedDeal.id}) }}" class="text-black text-decoration-none">
+							<p class="mt-2 fw-semibold" style="max-width: 140px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">{{ relatedDeal.name }}</p>
+						</a>
+						<p class="mb-0">
+							<strong class="text-danger">{{ relatedDeal.price|number_format(2, ',', ' ') }}€</strong>
+							{% if relatedDeal.originalPrice %}
+								<small class="text-muted text-decoration-line-through">{{ relatedDeal.originalPrice|number_format(2, ',', ' ') }}€</small>
+								<span class="badge bg-success fw-bold">{{ ((1 - relatedDeal.price / relatedDeal.originalPrice) * 100)|round(0) }}%</span>
+							{% endif %}
+						</p>
+					</div>
+				{% else %}
+					<p class="text-muted">Aucun deal similaire trouvé.</p>
+				{% endfor %}
+			</div>
+		</div>
+
+
+		<!-- SECTION 3 : COMMENTAIRES -->
+		<div id="comments" class="card shadow-sm p-3 my-4">
 			<h5 class="fw-bold">Commentaires</h5>
 
 			<!-- Section mettre un commentaire si l'utilisateur est connecté -->
 
 			{% if app.user %}
 				<div class="d-flex align-items-start border-bottom pb-3 my-3">
-					<img src="https://randomuser.me/api/portraits/men/7.jpg" alt="Avatar" class="rounded-circle" style="width: 54px; height: 54px; object-fit: cover;">
+					<img src="{{app.user.image}}" alt="Avatar" class="rounded-circle" style="width: 54px; height: 54px; object-fit: cover;">
 
 					<div class="ms-3 flex-grow-1">
 						<form method="post" action="">
@@ -83,7 +158,7 @@
 					class="d-flex align-items-start mt-3">
 					<!-- Avatar -->
 					<img
-					src="https://randomuser.me/api/portraits/men/{{ comment.id }}.jpg" alt="Avatar" class="rounded-circle" style="width: 54px; height: 54px; object-fit: cover;">
+					src="{{ comment.user.image }}" alt="Avatar" class="rounded-circle" style="width: 54px; height: 54px; object-fit: cover;">
 
 					<!-- Contenu du commentaire -->
 					<div class="ms-3 w-100">
@@ -127,34 +202,4 @@
 	</div>
 
 	<!-- Script pour ouvrir le champ de text de réponse -->
-	<script>
-	document.addEventListener('DOMContentLoaded', function() {
-    // Gestion des votes
-    document.querySelectorAll('.vote-btn').forEach(button => {
-        button.addEventListener('click', function() {
-            const commentId = this.dataset.id;
-            const voteType = this.dataset.type; // "upvote" ou "downvote"
-
-            // Simuler l'incrémentation des votes
-            const counter = this.querySelector(voteType === 'upvote' ? '.positive-votes' : '.negative-votes');
-            counter.textContent = parseInt(counter.textContent) + 1;
-
-            // TODO: Envoyer la requête AJAX à Symfony ici
-            console.log(`Vote ${voteType} pour le commentaire ID: ${commentId}`);
-        });
-    });
-
-    // Affichage du formulaire de réponse
-    document.querySelectorAll('.reply-btn').forEach(button => {
-        button.addEventListener('click', function() {
-            const commentId = this.dataset.id;
-            const replyForm = document.getElementById(`reply-form-${commentId}`);
-            replyForm.style.display = replyForm.style.display === 'none' ? 'block' : 'none';
-        });
-    });
-});
-
-</script>
 {% endblock %}
-
-

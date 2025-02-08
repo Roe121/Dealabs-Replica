@@ -5,6 +5,7 @@ namespace App\DataFixtures;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Faker\Factory;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserFixtures extends Fixture
@@ -13,40 +14,28 @@ class UserFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        // Création de 3 utilisateurs
-        $usersData = [
-            ['username' => 'alice', 'email' => 'alice@example.com', 'password' => 'alice'],
-            ['username' => 'bob', 'email' => 'bob@example.com', 'password' => 'bob'],
-            ['username' => 'charlie', 'email' => 'charlie@example.com', 'password' => 'charlie'],
-            ['username' => 'david', 'email' => 'david@example.com', 'password' => 'david'],
-            ['username' => 'eve', 'email' => 'eve@example.com', 'password' => 'eve'],
-            ['username' => 'frank', 'email' => 'frank@example.com', 'password' => 'frank'],
-            ['username' => 'grace', 'email' => 'grace@example.com', 'password' => 'grace'],
-            ['username' => 'hannah', 'email' => 'hannah@example.com', 'password' => 'hannah'],
-            ['username' => 'ian', 'email' => 'ian@example.com', 'password' => 'ian'],
-            ['username' => 'jack', 'email' => 'jack@example.com', 'password' => 'jack'],
-            ['username' => 'kate', 'email' => 'kate@example.com', 'password' => 'kate'],
-            ['username' => 'leo', 'email' => 'leo@example.com', 'password' => 'leo'],
-            ['username' => 'mia', 'email' => 'mia@example.com', 'password' => 'mia'],
-            ['username' => 'nathan', 'email' => 'nathan@example.com', 'password' => 'nathan'],
-            ['username' => 'lezzarrami', 'email' => 'lezzarrami@gmail.com', 'password' => 'securepassword'],
-        ];
-        
+        $faker = Factory::create();
 
-        foreach ($usersData as $index => $userData) {
+        for ($i = 0; $i < 15; $i++) {
             $user = new User();
-            $user->setUsername($userData['username']);
-            $user->setEmail($userData['email']);
+
+            $gender = $faker->randomElement(['men', 'women']);
+            $imageIndex = $faker->numberBetween(1, 99); // randomuser images go from 1 to 99
+            $profileImage = "https://randomuser.me/api/portraits/{$gender}/{$imageIndex}.jpg";
+
+            $user->setUsername($faker->userName);
+            $user->setEmail($faker->unique()->safeEmail);
             $user->setRoles(['ROLE_USER']);
-            
+            $user->setImage($profileImage); // Assurez-vous que l'entité User a un champ profileImage
+
             // Hash du mot de passe
-            $hashedPassword = $this->passwordHasher->hashPassword($user, $userData['password']);
+            $plainPassword = 'password'; // Exemple de mot de passe simple
+            $hashedPassword = $this->passwordHasher->hashPassword($user, $plainPassword);
             $user->setPassword($hashedPassword);
 
             $manager->persist($user);
 
-            $this->addReference('user_' . ($index), $user);
-            
+            $this->addReference('user_' . $i, $user);
         }
 
         $manager->flush();

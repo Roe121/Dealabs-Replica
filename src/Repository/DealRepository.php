@@ -69,4 +69,19 @@ class DealRepository extends ServiceEntityRepository
 
         return $queryBuilder->getQuery()->getResult();
     }
+
+
+    public function findRelatedDealsByCategories($categories, $currentDealId, $limit = 6)
+    {
+        $qb = $this->createQueryBuilder('d')
+            ->innerJoin('d.categories', 'c') // Association avec la table des catégories
+            ->where('c IN (:categories)')
+            ->andWhere('d.id != :currentDealId') // Exclure le deal actuel
+            ->setParameter('categories', $categories)
+            ->setParameter('currentDealId', $currentDealId)
+            ->setMaxResults($limit)
+            ->orderBy('d.createdAt', 'DESC');
+
+        return $qb->getQuery()->getResult();
+    }
 }

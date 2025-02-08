@@ -45,6 +45,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'user', orphanRemoval: true)]
     private Collection $comments;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $image = null;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
@@ -159,24 +162,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->comments;
     }
 
-    public function addYe(Comment $ye): static
+    public function addComment(Comment $comment): static
     {
-        if (!$this->comments->contains($ye)) {
-            $this->comments->add($ye);
-            $ye->setUser($this);
+        if (!$this->comments->contains($comment)) {
+            $this->comments->add($comment);
+            $comment->setUser($this);
         }
 
         return $this;
     }
 
-    public function removeYe(Comment $ye): static
+    public function removeComment(Comment $comment): static
     {
-        if ($this->yes->removeElement($ye)) {
+        if ($this->comments->removeElement($comment)) {
             // set the owning side to null (unless already changed)
-            if ($ye->getUser() === $this) {
-                $ye->setUser(null);
+            if ($comment->getUser() === $this) {
+                $comment->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): static
+    {
+        $this->image = $image;
 
         return $this;
     }

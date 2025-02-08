@@ -1,4 +1,6 @@
 import './bootstrap.js';
+import './js/DealShow.js';
+console.log('App.js chargé ✅');
 /*
  * Welcome to your app's main JavaScript file!
  *

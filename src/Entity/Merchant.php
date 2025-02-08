@@ -19,10 +19,10 @@ class Merchant
     private ?string $name = null;
 
     #[ORM\Column(length: 2083, nullable: true)]
-    private ?string $website_url = null;
+    private ?string $websiteUrl = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $logo = null;
+    private ?string $image = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
@@ -63,24 +63,24 @@ class Merchant
 
     public function getWebsiteUrl(): ?string
     {
-        return $this->website_url;
+        return $this->websiteUrl;
     }
 
-    public function setWebsiteUrl(?string $website_url): static
+    public function setWebsiteUrl(?string $websiteUrl): static
     {
-        $this->website_url = $website_url;
+        $this->websiteUrl = $websiteUrl;
 
         return $this;
     }
 
-    public function getLogo(): ?string
+    public function getImage(): ?string
     {
-        return $this->logo;
+        return $this->image;
     }
 
-    public function setLogo(?string $logo): static
+    public function setImage(?string $image): static
     {
-        $this->logo = $logo;
+        $this->image = $image;
 
         return $this;
     }

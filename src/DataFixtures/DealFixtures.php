@@ -14,7 +14,7 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use App\DataFixtures\CategoryFixtures;
 use App\Entity\Merchant;
 use App\Entity\User;
-use App\Enum\DealStatus;
+use App\Enum\DealStatusEnum;
 
 class DealFixtures extends Fixture implements DependentFixtureInterface
 {
@@ -48,8 +48,9 @@ class DealFixtures extends Fixture implements DependentFixtureInterface
         $deal->setEnable(true);
         $deal->setDealUrl($dealUrl);
         $deal->setImage($imageUrl);
-        $deal->setStatus(DealStatus::ACTIVE);
+        $deal->setStatus(DealStatusEnum::ACTIVE);
         $deal->setHotScore(mt_rand(10, 100));
+        $deal->setDeliveryPrice($index % 2 === 0 ? 0 : rand(1, 4));
         $deal->setMerchant($this->getReference('merchant_Amazon', Merchant::class));
         $userReference = $this->getReference('user_' . (($index % 2) + 1), User::class);
         $deal->setUser($userReference);

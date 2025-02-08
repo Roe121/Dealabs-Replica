@@ -19,23 +19,23 @@ timer: 3000 // Disparaît après 3 secondes
 	{% endfor %}
 
 
-	<div class="container my-5 px-5">
+	<div class="container my-5 px-4">
 		<h1 class="mb-4">Tous les deals</h1>
 
 		{% if deals is not empty %}
 			<div
-				class="row g-4">
+				class="row g-2">
 
 				<!-- Colonne principale (75%) -->
 				<div class="col-md-9">
 					{% for deal in deals %}
 						<div
-							class="card shadow-sm border-0 p-3 d-flex flex-row align-items-center mb-4">
+							class="card shadow-sm border-0 p-3 d-flex flex-row align-items-center mb-2">
 							<!-- Vote Box -->
 							<div class="d-flex flex-column align-items-center me-3">
-								<button class="btn btn-outline-danger btn-sm">▲</button>
+								<button class="btn btn-deal btn-sm">▲</button>
 								<span class="fw-bold text-danger">{{ deal.hotScore }}°</span>
-								<button class="btn btn-outline-primary btn-sm">▼</button>
+								<button class="btn btn-deal btn-sm">▼</button>
 							</div>
 
 							<!-- Image du deal -->
@@ -45,166 +45,163 @@ timer: 3000 // Disparaît après 3 secondes
 
 							<!-- Contenu du deal -->
 							<div class="flex-grow-1">
-								<h5 class="mb-1">
-									<a href="{{ path('deal_show', {'id': deal.id}) }}" class="text-black text-decoration-none">
+								<div class="d-flex justify-content-between align-items-center mb-1">
+									<a href="{{ path('deal_show', {'id': deal.id}) }}" class="text-black text-decoration-none fw-bold fs-5">
 										{{ deal.name }}
 									</a>
-								</h5>
-								<p class="text-muted small mb-1">
-									<strong class="text-danger fs-5">{{ deal.price }}€</strong>
+									<span class="badge badge bg-light text-grey ms-2">
+										Posté
+										{{ deal.createdAt|ago }}
+
+									</span>
+								</div>
+								<p class="text-muted small mb-1 d-flex align-items-center flex-wrap gap-2">
+									<strong class="text-danger fs-4">{{ deal.price }}€</strong>
 									<s class="text-secondary">{{ deal.originalPrice }}€</s>
-									<span class="badge bg-success fs-6 ">-{{ ((1 - (deal.price / deal.originalPrice)) * 100)|round }}%</span>
+									<span class="badge bg-success fs-6">-{{ ((1 - (deal.price / deal.originalPrice)) * 100)|round }}%</span>
+
+									<!-- 🚚 Livraison -->
+									<i class="bi bi-truck text-secondary "></i>
+									<span>{{ deal.deliveryPrice is null or deal.deliveryPrice == 0 ? 'Gratuit' : deal.deliveryPrice ~ '€' }}</span>
+
+									<!-- 🏪 Disponible chez le marchand -->
+									<span>| Disponible chez
+										<a href="{{ path('merchant_show', {'id': deal.merchant.id}) }}" class="fw-bold text-black text-decoration-none">
+											{{ deal.merchant.name }}
+										</a>
+									</span>
+
+									<!-- 👤 Partagé par l'utilisateur -->
+									<span class="d-flex align-items-center ms-2">
+										<img src="{{ deal.user.image }}" alt="User Image" class="rounded-circle me-1" style="width: 18px; height: 18px; object-fit: cover;">
+										Partagé par&nbsp;
+										<a href="{{ path('deal_show', {'id': deal.id}) }}" class="fw-bold text-black text-decoration-none">
+											{{ deal.user.username }}</a>
+
+									</span>
 								</p>
-								<p class="small text-muted mb-2">Vendu sur
-									{{ deal.merchant.name }}</p>
-								<p class="text-muted small mb-2">{{ deal.description|length > 100 ? deal.description[:100] ~ '...' : deal.description }}</p>
+							</a>
 
-								<!-- Infos complémentaires -->
-								<div class="d-flex align-items-center">
-									<small class="me-3 text-muted">
-										<i class="bi bi-chat"></i>
-										{{ deal.comments|length }}</small>
-									<small class="me-3 text-muted">
-										<i class="bi bi-share"></i>
-										Partagé par
-										{{ deal.user.username }}</small>
+							<p class="text-muted small mb-2">{{ deal.description|length > 100 ? deal.description[:100] ~ '...' : deal.description }}</p>
 
-									{% set now = date() %}
-									{% set timeDiff = date(deal.createdAt).diff(now) %}
-									<small class="text-muted">
-										{% if timeDiff.y > 0 %}
-											Posté il y a
-											{{ timeDiff.y }}
-											an{{ timeDiff.y > 1 ? 's' : '' }}
-										{% elseif timeDiff.m > 0 %}
-											Posté il y a
-											{{ timeDiff.m }}
-											mois
-										{% elseif timeDiff.d > 0 %}
-											Posté il y a
-											{{ timeDiff.d }}
-											jour{{ timeDiff.d > 1 ? 's' : '' }}
-										{% elseif timeDiff.h > 0 %}
-											Posté il y a
-											{{ timeDiff.h }}
-											heure{{ timeDiff.h > 1 ? 's' : '' }}
-										{% elseif timeDiff.i > 0 %}
-											Posté il y a
-											{{ timeDiff.i }}
-											minute{{ timeDiff.i > 1 ? 's' : '' }}
-										{% else %}
-											Posté il y a quelques secondes
-										{% endif %}
-									</small>
+							<!-- Infos complémentaires -->
+							<div class="d-flex align-items-center mt-auto">
+								<p class="me-3">
+									<a href="{{ path('deal_show', {'id': deal.id}) }}#comments" class="text-decoration-none text-black d-flex align-items-center">
+										<i class="bi bi-chat me-1"></i>
+										{{ deal.comments|length }}
+									</a>
+								</p>
+								<p class="me-3">
+									<i class="bi bi-share"></i>
+
+								</p>
+								<!-- Bouton Voir le deal -->
+								<div class="ms-auto">
+									<a href="{{ deal.dealUrl }}" target="_blank" class="btn btn-deal rounded-pill">Voir le deal
+										<i class="bi bi-box-arrow-up-right mx-2"></i>
+									</a>
 								</div>
 							</div>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
 
-							<!-- Bouton Voir le deal -->
-							<div>
-								<a href="{{ deal.dealUrl }}" target="_blank" class="btn btn-deal rounded-pill">Voir le deal
-									<i class="bi bi-box-arrow-up-right mx-2"></i>
-								</a>
+			<!-- Sidebar "Deals les + hot" -->
+			<div class="col-md-3 d-flex flex-column gap-2">
+				<div class="card p-3 shadow-sm">
+					<h5 class="mb-3">Deals les + hot</h5>
+					{% set hotDeals = deals|sort((a, b) => b.hotScore <=> a.hotScore)[:3] %}
+					{% for deal in hotDeals %}
+						<div class="d-flex align-items-center mb-3">
+							<img src="{{ deal.image }}" alt="Hot Deal Image" class="rounded" style="width: 84px; height: 84px; object-fit: cover; border-radius: 8px;">
+							<div class="ms-3 w-100">
+
+								<h6 class="mb-0">
+									<a href="{{ path('deal_show', {'id': deal.id}) }}" class="text-black text-decoration-none">
+										<span class="fw-bold text-danger">{{ deal.hotScore }}°</span>
+										{{ deal.name }}
+									</a>
+								</h6>
+								<h6 class="text-danger text-end bolder ">{{ deal.price }}€</h6>
 							</div>
 						</div>
 					{% endfor %}
 				</div>
 
-				<!-- Sidebar "Deals les + hot" -->
-				<div class="col-md-3">
-					<div class="card p-3 shadow-sm">
-						<h5 class="mb-3">Deals les + hot</h5>
-						{% set hotDeals = deals|sort((a, b) => b.hotScore <=> a.hotScore)[:3] %}
-						{% for deal in hotDeals %}
-							<div class="d-flex align-items-center mb-3">
-								<img src="{{ deal.image }}" alt="Hot Deal Image" class="rounded" style="width: 84px; height: 84px; object-fit: cover; border-radius: 8px;">
-								<div class="ms-3 w-100">
 
-									<h6 class="mb-0">
-										<a href="{{ path('deal_show', {'id': deal.id}) }}" class="text-black text-decoration-none">
-											<span class="fw-bold text-danger">{{ deal.hotScore }}°</span>
-											{{ deal.name }}
-										</a>
-									</h6>
-									<h6 class="text-danger text-end bolder ">{{ deal.price }}€</h6>
+				<!-- Sidebar "Activité" (Seulement si utilisateur connecté) -->
+				{% if app.user %}
+					<div class="card p-3 shadow-sm ">
+						<h5 class="mb-3">Activité</h5>
+						{% for comment in app.user.comments|slice(0,5) %}
+							<div class="d-flex align-items-center mb-2">
+								<img src="{{ comment.deal.image }}" alt="Activity Deal" class="rounded" style="width: 54px; height: 54px; object-fit: cover;">
+								<div class="ms-2">
+									<small class="text-muted">Vous avez commenté le deal</small>
+									<a href="{{ path('deal_show', {'id': comment.deal.id}) }}" class="d-block text-black text-decoration-none small">{{ comment.deal.name }}</a>
+									<small class="text-muted">
+										<i class="bi bi-chat"></i>
+										{{ comment.createdAt|date('d F Y') }}</small>
 								</div>
 							</div>
 						{% endfor %}
 					</div>
+				{% endif %}
 
+				<!-- Sidebar "Discussions" (Tous le monde peut voir) -->
+				<div class="card p-3 shadow-sm">
+					<h5 class="mb-3">Discussions
+						<span class="text-primary">▾</span>
+					</h5>
 
-					<!-- Sidebar "Activité" (Seulement si utilisateur connecté) -->
-					{% if app.user %}
-						<div class="card p-3 shadow-sm mt-4">
-							<h5 class="mb-3">Activité</h5>
-							{% for comment in app.user.comments|slice(0,5) %}
-								<div class="d-flex align-items-center mb-2">
-									<img src="{{ comment.deal.image }}" alt="Activity Deal" class="rounded" style="width: 54px; height: 54px; object-fit: cover;">
-									<div class="ms-2">
-										<small class="text-muted">Vous avez commenté le deal</small>
-										<a href="{{ path('deal_show', {'id': comment.deal.id}) }}" class="d-block text-black text-decoration-none small">{{ comment.deal.name }}</a>
-										<small class="text-muted">
-											<i class="bi bi-chat"></i>
-											{{ comment.createdAt|date('d F Y') }}</small>
-									</div>
-								</div>
-							{% endfor %}
-						</div>
-					{% endif %}
-
-					<!-- Sidebar "Discussions" (Tous le monde peut voir) -->
-					<div class="card p-3 shadow-sm mt-4">
-						<h5 class="mb-3">Discussions
-							<span class="text-primary">▾</span>
-						</h5>
-
-						<!-- Discussion 1 -->
-						<div class="d-flex align-items-center mb-2">
-							<img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User Avatar" class="rounded-circle" style="width: 26px; height: 26px; object-fit: cover;">
-							<div class="ms-2">
-								<a href="#" class="d-block text-black text-decoration-none small fw-bold">ClemS</a>
-								<a href="#" class="d-block text-black text-decoration-none small">Trade Republic lance un compte courant...</a>
-								<small class="text-muted">
-									<i class="bi bi-chat"></i>
-									354
-								</small>
-							</div>
-						</div>
-
-						<!-- Discussion 2 -->
-						<div class="d-flex align-items-center mb-2">
-							<img src="https://randomuser.me/api/portraits/women/45.jpg" alt="User Avatar" class="rounded-circle" style="width: 26px; height: 26px; object-fit: cover;">
-							<div class="ms-2">
-								<a href="#" class="d-block text-black text-decoration-none small fw-bold">nrslr</a>
-								<a href="#" class="d-block text-black text-decoration-none small">LeBonCoin : À quand la livraison à 0,99€ ?</a>
-								<small class="text-muted">
-									<i class="bi bi-chat"></i>
-									53
-								</small>
-							</div>
-						</div>
-
-						<!-- Discussion 3 -->
-						<div class="d-flex align-items-center mb-2">
-							<img src="https://randomuser.me/api/portraits/men/12.jpg" alt="User Avatar" class="rounded-circle" style="width: 26px; height: 26px; object-fit: cover;">
-							<div class="ms-2">
-								<a href="#" class="d-block text-black text-decoration-none small fw-bold">El_Maak</a>
-								<a href="#" class="d-block text-black text-decoration-none small">[Happy you !] Ces sites, magasins et restaurants qui offrent un cadeau...</a>
-								<small class="text-muted">
-									<i class="bi bi-chat"></i>
-									206
-								</small>
-							</div>
+					<!-- Discussion 1 -->
+					<div class="d-flex align-items-center mb-2">
+						<img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User Avatar" class="rounded-circle" style="width: 26px; height: 26px; object-fit: cover;">
+						<div class="ms-2">
+							<a href="#" class="d-block text-black text-decoration-none small fw-bold">ClemS</a>
+							<a href="#" class="d-block text-black text-decoration-none small">Trade Republic lance un compte courant...</a>
+							<small class="text-muted">
+								<i class="bi bi-chat"></i>
+								354
+							</small>
 						</div>
 					</div>
 
+					<!-- Discussion 2 -->
+					<div class="d-flex align-items-center mb-2">
+						<img src="https://randomuser.me/api/portraits/women/45.jpg" alt="User Avatar" class="rounded-circle" style="width: 26px; height: 26px; object-fit: cover;">
+						<div class="ms-2">
+							<a href="#" class="d-block text-black text-decoration-none small fw-bold">nrslr</a>
+							<a href="#" class="d-block text-black text-decoration-none small">LeBonCoin : À quand la livraison à 0,99€ ?</a>
+							<small class="text-muted">
+								<i class="bi bi-chat"></i>
+								53
+							</small>
+						</div>
+					</div>
+
+					<!-- Discussion 3 -->
+					<div class="d-flex align-items-center mb-2">
+						<img src="https://randomuser.me/api/portraits/men/12.jpg" alt="User Avatar" class="rounded-circle" style="width: 26px; height: 26px; object-fit: cover;">
+						<div class="ms-2">
+							<a href="#" class="d-block text-black text-decoration-none small fw-bold">El_Maak</a>
+							<a href="#" class="d-block text-black text-decoration-none small">[Happy you !] Ces sites, magasins et restaurants qui offrent un cadeau...</a>
+							<small class="text-muted">
+								<i class="bi bi-chat"></i>
+								206
+							</small>
+						</div>
+					</div>
 				</div>
 
 			</div>
-		{% else %}
-			<div class="alert alert-info text-center" role="alert">
-				Aucun deal trouvé.
-			</div>
-		{% endif %}
-	</div>
 
-{% endblock %}
+		</div>
+	{% else %}
+		<div class="alert alert-info text-center" role="alert">
+			Aucun deal trouvé.
+		</div>
+	{% endif %}
+</div>{% endblock %}
