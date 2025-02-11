@@ -25,12 +25,13 @@ class Comment
     private ?Deal $deal = null;
 
     #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'comments')]
+    #[ORM\JoinColumn(onDelete: 'CASCADE', nullable: true)] 
     private ?self $parent = null;
 
     /**
      * @var Collection<int, self>
      */
-    #[ORM\OneToMany(targetEntity: self::class, mappedBy: 'parent')]
+    #[ORM\OneToMany(targetEntity: self::class, mappedBy: 'parent', orphanRemoval: true)]
     private Collection $comments;
 
     #[ORM\Column(type: Types::TEXT)]
@@ -50,6 +51,9 @@ class Comment
 
     public function __construct()
     {
+        $this->createdAt = new \DateTimeImmutable();
+        $this->positiveVotes = 0;
+        $this->negativeVotes = 0;
         $this->comments = new ArrayCollection();
     }
 

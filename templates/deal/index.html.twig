@@ -9,11 +9,11 @@
 		{% for message in messages %}
 			<script>
 				Swal.fire({
-icon: '{{ label }}', // success, error, warning, info
-title: '{{ message }}',
-showConfirmButton: false,
-timer: 3000 // Disparaît après 3 secondes
-});
+					icon: '{{ label }}', // success, error, warning, info
+					title: '{{ message }}',
+					showConfirmButton: false,
+					timer: 3000 // Disparaît après 3 secondes
+				});
 			</script>
 		{% endfor %}
 	{% endfor %}

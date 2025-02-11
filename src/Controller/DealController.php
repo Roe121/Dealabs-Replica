@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Comment;
 use App\Entity\Deal;
+use App\Form\CommentType;
 use App\Repository\CategoryRepository;
 use App\Repository\DealRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -54,10 +56,7 @@ final class DealController extends AbstractController
     {
         $deal = $dealRepository->find($id);
 
-        // Récupérer les catégories du deal
         $categories = $deal->getCategories();
-
-        // Récupérer des deals similaires par catégories (exclure le deal actuel)
         $relatedDeals = $dealRepository->findRelatedDealsByCategories($categories, $deal->getId());
 
         return $this->render('deal/show.html.twig', [

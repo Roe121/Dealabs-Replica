@@ -1,13 +1,30 @@
 {% extends 'base.html.twig' %}
 
+
 {% block title %}
 	{{ deal.name }}
 	- Bon plan
 {% endblock %}
 
 {% block body %}
+	{% for label, messages in app.flashes %}
+		{% for message in messages %}
+			<script>
+				Swal.fire({
+icon: '{{ label }}', // success, error, warning, info
+title: '{{ message }}',
+showConfirmButton: false,
+timer: 2000 // Disparaît après 1.5 secondes
+});
+			</script>
+		{% endfor %}
+	{% endfor %}
+
+	<meta name="csrf-token" content="{{ csrf_token('edit_comment') }}">
+
+
 	<div
-		class="container mt-4 px-11">
+		id="deal-show" class="container mt-4 px-11 d-flex flex-column gap-3">
 		<!-- SECTION 1 : LE DEAL -->
 		<div class="card  position-relative">
 			<div
@@ -49,15 +66,15 @@
 					</p>
 
 					<!-- 🏪 Disponible chez le marchand -->
-						<span>
+					<span>
 						<!-- 🚚 Livraison -->
 						<i class="bi bi-truck text-secondary "></i>
 						<span>{{ deal.deliveryPrice is null or deal.deliveryPrice == 0 ? 'Gratuit' : deal.deliveryPrice ~ '€' }}</span>
 						| Disponible chez
-							<a href="{{ path('merchant_show', {'id': deal.merchant.id}) }}" class="fw-bold text-black text-decoration-none">
-								{{ deal.merchant.name }}
-							</a>
-						</span>
+						<a href="{{ path('merchant_show', {'id': deal.merchant.id}) }}" class="fw-bold text-black text-decoration-none">
+							{{ deal.merchant.name }}
+						</a>
+					</span>
 
 					<!-- Infos complémentaires -->
 					<div class="d-flex align-items-center mt-auto ">
@@ -82,14 +99,34 @@
 		</div>
 
 		<!-- SECTION 2 : DESCRIPTION -->
-		<div class="card shadow-sm p-3 mt-4">
-			<h5 class="fw-bold">À propos de ce deal</h5>
-			<p class="text-muted">{{ deal.description }}</p>
+		<div class="card shadow-sm p-3 ">
+			<h5 class="fw-bold mb-4 mt-2">À propos de ce deal</h5>
+
+			<!-- User Info -->
+			<div class="d-flex align-items-center mb-3">
+				<img src="{{ deal.user.image }}" alt="Avatar" class="rounded-circle me-2" width="40" height="40">
+				<div>
+					<a href="#" class="fw-bold text-black text-decoration-none">{{ deal.user.username }}</a>
+					<div class="text-muted small">
+						<i class="bi bi-calendar"></i>
+						Membre depuis
+						{{ deal.user.createdAt|date('Y') }}
+
+
+						<i class="bi bi-tag ms-2"></i>
+						{{ deal.user.deals|length }}
+					</div>
+				</div>
+			</div>
+
+			<!-- Deal Description -->
+			<p>{{ deal.description }}</p>
 		</div>
+
 
 		<!-- SECTION 3 : DEALS SIMILAIRES -->
 
-		<div class="card shadow-sm p-3 my-4">
+		<div class="card shadow-sm p-3">
 			<h5 class="fw-bold m-3">Vous aimerez aussi</h5>
 			<div class="d-flex overflow-auto gap-3">
 				{% for relatedDeal in relatedDeals %}
@@ -120,86 +157,10 @@
 
 
 		<!-- SECTION 3 : COMMENTAIRES -->
-		<div id="comments" class="card shadow-sm p-3 my-4">
-			<h5 class="fw-bold">Commentaires</h5>
+		
+		{% include 'partials/_comment_section.html.twig' %}
 
-			<!-- Section mettre un commentaire si l'utilisateur est connecté -->
-
-			{% if app.user %}
-				<div class="d-flex align-items-start border-bottom pb-3 my-3">
-					<img src="{{app.user.image}}" alt="Avatar" class="rounded-circle" style="width: 54px; height: 54px; object-fit: cover;">
-
-					<div class="ms-3 flex-grow-1">
-						<form method="post" action="">
-							<div class="mb-2">
-								<textarea name="content" class="form-control" rows="3" placeholder="Écrire un commentaire..." required></textarea>
-							</div>
-							<div class="d-flex justify-content-end">
-								<button type="submit" class="btn btn-deal rounded-pill">
-									<i class="bi bi-send mx-1"></i>
-									Publier
-								</button>
-							</div>
-
-						</form>
-					</div>
-				</div>
-			{% else %}
-				<p class="text-muted">Veuillez
-					<a href="#" data-bs-toggle="modal" data-bs-target="#loginModal">vous connecter</a>
-					pour ajouter un commentaire.</p>
-			{% endif %}
-
-			<!-- Section liste des commentaires du deal -->
-
-
-			{% for comment in deal.comments %}
-				<div
-					class="d-flex align-items-start mt-3">
-					<!-- Avatar -->
-					<img
-					src="{{ comment.user.image }}" alt="Avatar" class="rounded-circle" style="width: 54px; height: 54px; object-fit: cover;">
-
-					<!-- Contenu du commentaire -->
-					<div class="ms-3 w-100">
-						<strong>{{ comment.user.username }}</strong>
-						<p class="mb-1">{{ comment.content }}</p>
-						<small class="text-muted">{{ comment.createdAt|date('d/m/Y à H:i') }}</small>
-
-						<!-- Section des actions (votes + réponse) -->
-						<div
-							class="d-flex align-items-center mt-2 gap-3">
-							<!-- Boutons de vote -->
-							<button class="btn btn-sm btn-outline-success vote-btn" data-id="{{ comment.id }}" data-type="upvote">
-								<i class="bi bi-hand-thumbs-up"></i>
-								<span class="positive-votes">{{ comment.positiveVotes }}</span>
-							</button>
-
-							<button class="btn btn-sm btn-outline-danger vote-btn" data-id="{{ comment.id }}" data-type="downvote">
-								<i class="bi bi-hand-thumbs-down"></i>
-								<span class="negative-votes">{{ comment.negativeVotes }}</span>
-							</button>
-
-							<!-- Bouton pour répondre -->
-							<button class="btn btn-sm btn-outline-secondary reply-btn" data-id="{{ comment.id }}">
-								<i class="bi bi-reply-fill"></i>
-								Répondre
-							</button>
-						</div>
-
-						<!-- Formulaire de réponse caché par défaut -->
-						<div class="reply-form mt-2" id="reply-form-{{ comment.id }}" style="display: none;">
-							<textarea class="form-control mb-2" rows="2" placeholder="Votre réponse..."></textarea>
-							<button class="btn btn-deal rounded-pill btn-sm">Envoyer la réponse</button>
-						</div>
-					</div>
-				</div>
-			{% else %}
-				<p class="text-muted">Aucun commentaire pour le moment.</p>
-			{% endfor %}
-
-		</div>
 	</div>
 
-	<!-- Script pour ouvrir le champ de text de réponse -->
+
 {% endblock %}

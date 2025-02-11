@@ -20,16 +20,15 @@ class UserFixtures extends Fixture
             $user = new User();
 
             $gender = $faker->randomElement(['men', 'women']);
-            $imageIndex = $faker->numberBetween(1, 99); // randomuser images go from 1 to 99
+            $imageIndex = $faker->numberBetween(1, 99); 
             $profileImage = "https://randomuser.me/api/portraits/{$gender}/{$imageIndex}.jpg";
 
             $user->setUsername($faker->userName);
             $user->setEmail($faker->unique()->safeEmail);
             $user->setRoles(['ROLE_USER']);
-            $user->setImage($profileImage); // Assurez-vous que l'entité User a un champ profileImage
+            $user->setImage($profileImage); 
 
-            // Hash du mot de passe
-            $plainPassword = 'password'; // Exemple de mot de passe simple
+            $plainPassword = 'p'; 
             $hashedPassword = $this->passwordHasher->hashPassword($user, $plainPassword);
             $user->setPassword($hashedPassword);
 
