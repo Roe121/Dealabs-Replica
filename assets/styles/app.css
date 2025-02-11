@@ -1,3 +1,7 @@
+:root {
+  --border-radius: 8px;
+}
+
 body {
   background-color: rgb(238, 238, 238);
     
@@ -137,3 +141,7 @@ button {
 .px-9 { padding-left: 9rem !important; padding-right: 9rem !important; }
 .px-10 { padding-left: 10rem !important; padding-right: 10rem !important; }
 .px-11 { padding-left: 11rem !important; padding-right: 11rem !important; }
+
+.w-60 { width: 60% !important; }
+
+.rounded-card-border { border-radius: var(--border-radius) }

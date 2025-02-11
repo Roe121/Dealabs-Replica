@@ -26,9 +26,9 @@ timer: 2000 // Disparaît après 1.5 secondes
 	<div
 		id="deal-show" class="container mt-4 px-11 d-flex flex-column gap-3">
 		<!-- SECTION 1 : LE DEAL -->
-		<div class="card  position-relative">
+		<div class="card  position-relative rounded-card-border">
 			<div
-				class="d-flex align-items-start gap-3 border shadow-sm rounded-3 p-4">
+				class="d-flex align-items-start gap-3  shadow-sm  p-4">
 
 				<!-- Vote Box -->
 				<div class="d-flex flex-column align-items-center me-3 align-self-center">
@@ -99,7 +99,7 @@ timer: 2000 // Disparaît après 1.5 secondes
 		</div>
 
 		<!-- SECTION 2 : DESCRIPTION -->
-		<div class="card shadow-sm p-3 ">
+		<div class="card shadow-sm p-3 rounded-card-border ">
 			<h5 class="fw-bold mb-4 mt-2">À propos de ce deal</h5>
 
 			<!-- User Info -->
@@ -126,7 +126,7 @@ timer: 2000 // Disparaît après 1.5 secondes
 
 		<!-- SECTION 3 : DEALS SIMILAIRES -->
 
-		<div class="card shadow-sm p-3">
+		<div class="card shadow-sm p-3 rounded-card-border">
 			<h5 class="fw-bold m-3">Vous aimerez aussi</h5>
 			<div class="d-flex overflow-auto gap-3">
 				{% for relatedDeal in relatedDeals %}

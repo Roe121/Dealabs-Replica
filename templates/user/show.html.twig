@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ user.username }}
+{% endblock %}
+
+{% block body %}
+	<div
+		class="profile-container w-60 mx-auto ">
+		<!-- Header du profil -->
+		<div class="profile-header my-3 bg-white rounded-card" style="text-align: center; padding: 20px;">
+			<img src="{{ user.image }}" alt="Avatar" style="width: 100px; height: 100px; border-radius: 50%;">
+			<h2>{{ user.username }}</h2>
+			<p>Inscrit(e) depuis le
+				{{ user.createdAt|date('d F Y') }}</p>
+			<p>{{ user.deals|length }}
+				deal(s) •
+				{{ user.comments|length }}
+				commentaire(s)</p>
+		</div>
+
+		<!-- Onglets de navigation -->
+		<nav style="display: flex; justify-content: space-around; border-bottom: 1px solid #ccc; padding-bottom: 10px;">
+			<a href="#" class="text-decoration-none text-black">Activité</a>
+			<a href="#" class="text-decoration-none text-black">Deals publiés</a>
+			<a href="#" class="text-decoration-none text-black">Discussions crées</a>
+			<a href="#" class="text-decoration-none text-black">Statistiques</a>
+		</nav>
+
+		<!-- Activité des commentaires -->
+		<div class="activities" style="margin-top: 20px;">
+			{% for comment in user.comments %}
+				<div class="rounded-card-border bg-white d-flex align-items-center p-3 my-2">
+					<img src="{{ comment.deal.image }}" alt="Deal Image" class="img-fluid rounded border me-2" style="width: 60px; height: 60px; object-fit: cover; border-radius: 12px;">
+
+					<div class="d-flex my-auto flex-column w-100">
+						<div>
+							{% if app.user == user %}
+								<strong>Vous avez commenté le deal :</strong>
+							{% else %}
+								<strong>{{ user.username }}
+									a commenté le deal :</strong>
+							{% endif %}
+							<a href="{{ path('deal_show', {id: comment.deal.id}) }}">{{ comment.deal.name }}</a>
+						</div>
+						<p style="color: #666; font-size: 14px;">
+							<i class="bi bi-chat"></i>
+							{{ comment.createdAt|date('d F Y') }}</p>
+					</div>
+				</div>
+			{% else %}
+				<p>Aucune activité récente.</p>
+			{% endfor %}
+		</div>
+	</div>
+{% endblock %}

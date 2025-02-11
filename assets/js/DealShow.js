@@ -15,7 +15,7 @@ window.addEventListener("turbo:load", function () {
   });
 
 
-    // Afficher le commentaire ciblé par son ID dans l'URL
+// Afficher le commentaire ciblé par son ID dans l'URL
   const urlParams = new URLSearchParams(window.location.search);
   if (urlParams.has("comment")) {
     const commentId = urlParams.get("comment");

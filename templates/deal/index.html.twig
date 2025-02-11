@@ -30,7 +30,7 @@
 				<div class="col-md-9">
 					{% for deal in deals %}
 						<div
-							class="card shadow-sm border-0 p-3 d-flex flex-row align-items-center mb-2">
+							class="card shadow-sm rounded-card-border p-3 d-flex flex-row align-items-center mb-2">
 							<!-- Vote Box -->
 							<div class="d-flex flex-column align-items-center me-3">
 								<button class="btn btn-deal btn-sm">▲</button>
@@ -75,7 +75,7 @@
 									<span class="d-flex align-items-center ms-2">
 										<img src="{{ deal.user.image }}" alt="User Image" class="rounded-circle me-1" style="width: 18px; height: 18px; object-fit: cover;">
 										Partagé par&nbsp;
-										<a href="{{ path('deal_show', {'id': deal.id}) }}" class="fw-bold text-black text-decoration-none">
+										<a href="{{ path('user_show', {'id': deal.user.id}) }}" class="fw-bold text-black text-decoration-none">
 											{{ deal.user.username }}</a>
 
 									</span>
@@ -110,7 +110,7 @@
 
 			<!-- Sidebar "Deals les + hot" -->
 			<div class="col-md-3 d-flex flex-column gap-2">
-				<div class="card p-3 shadow-sm">
+				<div class="card p-3 shadow-sm rounded-card-border">
 					<h5 class="mb-3">Deals les + hot</h5>
 					{% set hotDeals = deals|sort((a, b) => b.hotScore <=> a.hotScore)[:3] %}
 					{% for deal in hotDeals %}
@@ -133,7 +133,7 @@
 
 				<!-- Sidebar "Activité" (Seulement si utilisateur connecté) -->
 				{% if app.user %}
-					<div class="card p-3 shadow-sm ">
+					<div class="card p-3 shadow-sm rounded-card-border ">
 						<h5 class="mb-3">Activité</h5>
 						{% for comment in app.user.comments|slice(0,5) %}
 							<div class="d-flex align-items-center mb-2">
@@ -151,7 +151,7 @@
 				{% endif %}
 
 				<!-- Sidebar "Discussions" (Tous le monde peut voir) -->
-				<div class="card p-3 shadow-sm">
+				<div class="card p-3 shadow-sm rounded-card-border">
 					<h5 class="mb-3">Discussions
 						<span class="text-primary">▾</span>
 					</h5>
