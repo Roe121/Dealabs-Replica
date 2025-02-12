@@ -15,11 +15,11 @@
 		</div>
 
 		<!-- Onglets de navigation -->
-		<nav class="d-flex justify-content-around border-bottom pb-2 mb-3">
-			<a href="#" class="nav-link active" data-target="activities">Activité</a>
-			<a href="#" class="nav-link" data-target="deals">Deals publiés</a>
-			<a href="#" class="nav-link" data-target="discussions">Discussions</a>
-			<a href="#" class="nav-link" data-target="statistics">Statistiques</a>
+		<nav class="d-flex justify-content-center border-bottom pb-2 mb-3">
+			<a  href="#" class="nav-link profile-nav-link active" data-target="activities">Activité</a>
+			<a  href="#" class="nav-link profile-nav-link" data-target="deals">Deals</a>
+			<a  href="#" class="nav-link profile-nav-link" data-target="discussions">Discussions</a>
+			<a  href="#" class="nav-link profile-nav-link" data-target="statistics">Statistiques</a>
 		</nav>
 
 		<!-- Activité des commentaires -->
@@ -56,20 +56,26 @@
 			{% endfor %}
 		</div>
 
-		<!-- Deals publiés -->
+		<!-- Discussions crées publiés -->
 		<div id="discussions" class="tab-content d-none mb-4">
 			<p>Système de discussions en cours de développement.. 😊</p>
 		</div>
+
+		<!-- Statistiques -->
+		<div id="statistics" class="tab-content d-none mb-4">
+			<p>Affichage des Statistiques en cours de développement.. 😊</p>
+		</div>
+
 	</div>
 
 	<!-- Script JavaScript pour la navigation des onglets -->
 	<script>
-		document.querySelectorAll('.nav-link').forEach(link => {
+		document.querySelectorAll('.profile-nav-link').forEach(link => {
 			link.addEventListener('click', function (e) {
 				e.preventDefault();
 
 				// Gestion des classes actives pour les onglets
-				document.querySelectorAll('.nav-link').forEach(nav => nav.classList.remove('active'));
+				document.querySelectorAll('.profile-nav-link').forEach(nav => nav.classList.remove('active'));
 				this.classList.add('active');
 
 				// Affichage du contenu correspondant

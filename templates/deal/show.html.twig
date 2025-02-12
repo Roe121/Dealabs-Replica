@@ -106,7 +106,7 @@ timer: 2000 // Disparaît après 1.5 secondes
 			<div class="d-flex align-items-center mb-3">
 				<img src="{{ deal.user.image }}" alt="Avatar" class="rounded-circle me-2" width="40" height="40">
 				<div>
-					<a href="#" class="fw-bold text-black text-decoration-none">{{ deal.user.username }}</a>
+					<a href="{{ path('user_show', {'id': deal.user.id}) }}" class="fw-bold text-black text-decoration-none">{{ deal.user.username }}</a>
 					<div class="text-muted small">
 						<i class="bi bi-calendar"></i>
 						Membre depuis

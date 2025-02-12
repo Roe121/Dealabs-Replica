@@ -146,6 +146,19 @@ button {
   color: white;
 }
 
+.btn-deal-outline {
+  background-color: transparent;
+  color: #00a1bf;
+  border: 1px solid #00a1bf;
+  transition: background-color 0.6s, color 0.3s;
+}
+
+.btn-deal-outline:hover {
+  background-color: #00a1bf;
+  border-color: #00a1bf;
+  color: white;
+}
+
 
 
 /* __________________________________________________________Style de la page d'un deal'_____________________________________________________ */
