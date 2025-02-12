@@ -20,6 +20,9 @@ final class DealController extends AbstractController
     #[Route('/deal_list', name: 'deal_list', methods: ['GET'])]
     public function list(Request $request, DealRepository $dealRepository, CategoryRepository $categoryRepository): Response
     {
+
+        $hotestDeals = $dealRepository->findHotestDeals(3);
+
         $filter = $request->query->get('filter', 'all');
         $categoryId = $request->query->get('category');
         $searchTerm = $request->query->get('q', '');
@@ -48,6 +51,7 @@ final class DealController extends AbstractController
             'deals' => $deals,
             'filter' => $filter,
             'searchTerm' => $searchTerm,
+            'hotestDeals' => $hotestDeals,
         ]);
     }
 

@@ -14,7 +14,7 @@
 
 			<form id="search-form" class="d-flex" method="GET" action="{{ path('deal_list') }}">
 				<input type="text" id="search-input" class="form-control" placeholder="Rechercher un deal" name="q" value="{{ searchTerm }}" aria-label="Search">
-				<button class=" btn-deal mx-2 " type="submit">Rechercher</button>
+				<button class=" btn-search mx-2 " type="submit">Rechercher</button>
 			</form>
 
 			<ul class="navbar-nav ms-auto">
@@ -37,7 +37,7 @@
 					</ul>
 				</li>
 				{% if app.user %}
-					<button class="rounded-pill btn-deal-outline d-flex align-items-center px-3">
+					<button class=" rounded-pill btn-deal-outline d-flex align-items-center px-3">
 						<i class="bi bi-plus-lg me-2"></i>
 						Poster
 					</button>
@@ -49,7 +49,7 @@
 							Bonjour,
 							{{ app.user.username }}
 						</a>
-						<ul class="dropdown-menu" aria-labelledby="userDropdown">
+						<ul class="dropdown-menu rounded-card-border" aria-labelledby="userDropdown">
 							<li>
 								<a class="dropdown-item" href="{{ path('user_show', {'id': app.user.id}) }}">
 									<i class="bi bi-person-lines-fill me-2"></i>Mon profil

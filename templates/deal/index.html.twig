@@ -37,8 +37,8 @@
 			<div class="col-md-3 d-flex flex-column gap-2">
 				<div class="card p-3 shadow-sm rounded-card-border">
 					<h5 class="mb-3">Deals les + hot</h5>
-					{% set hotDeals = deals|sort((a, b) => b.hotScore <=> a.hotScore)[:3] %}
-					{% for deal in hotDeals %}
+					
+					{% for deal in hotestDeals %}
 						<div class="d-flex align-items-center mb-3">
 							<img src="{{ deal.image }}" alt="Hot Deal Image" class="rounded" style="width: 84px; height: 84px; object-fit: cover; border-radius: 8px;">
 							<div class="ms-3 w-100">

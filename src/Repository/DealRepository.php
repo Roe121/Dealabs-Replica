@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Deal;
+use App\Enum\DealStatusEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -81,6 +82,19 @@ class DealRepository extends ServiceEntityRepository
             ->setParameter('currentDealId', $currentDealId)
             ->setMaxResults($limit)
             ->orderBy('d.createdAt', 'DESC');
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findHotestDeals($limit)
+    {
+        $activeStatus = DealStatusEnum::ACTIVE;
+
+        $qb = $this->createQueryBuilder('d')
+            ->where('d.status = :activeStatus')
+            ->setParameter('activeStatus', $activeStatus)
+            ->orderBy('d.hotScore', 'DESC')
+            ->setMaxResults($limit);
 
         return $qb->getQuery()->getResult();
     }
