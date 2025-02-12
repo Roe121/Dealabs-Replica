@@ -1,10 +1,22 @@
 :root {
   --border-radius: 8px;
+  --theme-color: #00a1bf;
+  --theme-hover-color: #008a9f;
 }
 
 body {
   background-color: rgb(238, 238, 238);
     
+}
+
+a {
+	color: var(--theme-color);
+	text-decoration: none;
+	transition: color 0.3s ease;
+}
+
+a:hover {
+  color: var(--theme-hover-color);
 }
 /* __________________________________________________________Style de la barre de navigation_____________________________________________________ */
 .navbar-nav .nav-link {
@@ -134,6 +146,8 @@ button {
   color: white;
 }
 
+
+
 /* __________________________________________________________Style de la page d'un deal'_____________________________________________________ */
 .px-6 { padding-left: 6rem !important; padding-right: 6rem !important; }
 .px-7 { padding-left: 7rem !important; padding-right: 7rem !important; }
@@ -145,3 +159,23 @@ button {
 .w-60 { width: 60% !important; }
 
 .rounded-card-border { border-radius: var(--border-radius) }
+
+
+
+/* __________________________________________________________Style de la page de profile_____________________________________________________ */
+.nav-link {
+  border-bottom: 2px solid transparent;
+  transition: all 0.3s ease;
+  color: black;
+}
+
+.nav-link.active {
+  color: var(--theme-color);
+  border-bottom: 2px solid var(--theme-color);
+}
+
+.nav-link:hover {
+	color: var(--theme-color);
+	border-bottom: 2px solid var(--theme-color);
+	background-color: transparent; /* Pour éviter un fond inattendu */
+}

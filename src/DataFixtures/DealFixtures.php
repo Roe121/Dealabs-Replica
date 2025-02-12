@@ -51,7 +51,7 @@ class DealFixtures extends Fixture implements DependentFixtureInterface
         $deal->setStatus(DealStatusEnum::ACTIVE);
         $deal->setHotScore(mt_rand(10, 100));
         $deal->setDeliveryPrice($index % 2 === 0 ? 0 : rand(1, 4));
-        $deal->setMerchant($this->getReference('merchant_Amazon', Merchant::class));
+        $deal->setMerchant($this->getReference('merchant_' . rand(0, 4), Merchant::class));
         $userReference = $this->getReference('user_' .rand(0,8), User::class);
         $deal->setUser($userReference);
         $this->addReference('deal_' . $index, $deal);

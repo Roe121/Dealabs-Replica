@@ -12,6 +12,7 @@ class MerchantFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         $faker = Factory::create();
+        $i = 0;
 
         $merchants = [
             ['Amazon', 'https://www.amazon.com', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS5ckwJEfm-vgiiSHDGi4eqx8g5rKrNDluSMw&s'],
@@ -28,9 +29,9 @@ class MerchantFixtures extends Fixture
             $merchant->setImage($data[2]);
             $merchant->setCreatedAt(new \DateTimeImmutable());
             $merchant->setEnable(true);
-
             $manager->persist($merchant);
-            $this->addReference('merchant_' . $data[0], $merchant);
+            $this->addReference('merchant_' . $i, $merchant);
+            $i++;
         }
 
         // Générer d'autres marchands aléatoires avec Faker
@@ -40,7 +41,7 @@ class MerchantFixtures extends Fixture
             $merchant->setWebsiteUrl($faker->url);
             $merchant->setImage(null);
             $merchant->setCreatedAt(new \DateTimeImmutable());
-            $merchant->setEnable($faker->boolean(80)); // 80% de chance d'être activé
+            $merchant->setEnable($faker->boolean(80)); 
 
             $manager->persist($merchant);
         }
