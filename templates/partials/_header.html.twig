@@ -1,4 +1,5 @@
 {% include 'partials/_login_modal.html.twig' %}
+{% include 'partials/_new_post_modal.html.twig' %}
 
 
 <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
@@ -37,7 +38,7 @@
 					</ul>
 				</li>
 				{% if app.user %}
-					<button class=" rounded-pill btn-deal-outline d-flex align-items-center px-3">
+					<button class=" rounded-pill btn-deal-outline d-flex align-items-center px-3" data-bs-toggle="modal" data-bs-target="#newPostModal">
 						<i class="bi bi-plus-lg me-2"></i>
 						Poster
 					</button>

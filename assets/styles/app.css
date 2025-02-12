@@ -200,3 +200,26 @@ a:hover {
 	border-bottom: 2px solid var(--theme-color);
 	background-color: transparent; /* Pour éviter un fond inattendu */
 }
+
+/* __________________________________________________________Style de la page de post_____________________________________________________ */
+
+
+
+
+.post-card {
+  transition: transform 0.3s ease, border 0.3s ease, color 0.3s ease; 
+  border: 1px solid #ccc;
+  border-radius: var(--border-radius);
+}
+
+.post-card:hover {
+  transform: scale(1.05); 
+  border: 1px solid var(--theme-color);
+}
+
+.post-card:hover h6 {
+  color: var(--theme-color) !important;
+}
+
+
+

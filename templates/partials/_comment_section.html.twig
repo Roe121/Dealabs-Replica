@@ -33,7 +33,7 @@
 	{% for comment in deal.comments|filter(comment => comment.parent is null) %}
 
 		<div
-			id="comment-{{ comment.id }}" class="d-flex align-items-start mt-2 border-top py-4">
+			id="comment-{{ comment.id }}" class="d-flex align-items-start mt-2 border-top">
 
 			<!-- Contenu du commentaire -->
 			<div class="ms-3 w-100">
@@ -113,14 +113,14 @@
 
 				<!-- 🔽 Sous-commentaires (Réponses) -->
 				<div
-					class="ms-5 p-2 mt-3">
+					class="ms-5 p-2">
 					<!-- Formulaire de réponse (toujours présent) -->
 					<form method="post" action="{{ path('comment_add', {'id': deal.id}) }}">
-						<div class="reply-form my-3" id="reply-form-{{ comment.id }}" style="display: none;">
+						<div class="reply-form my-3 text-end" id="reply-form-{{ comment.id }}" style="display: none;">
 							{% if app.user %}
 								<textarea name="content" class="form-control mb-2" rows="2" placeholder="Votre réponse..." required></textarea>
 								<input type="hidden" name="parent_id" value="{{ comment.id }}">
-								<button class="btn btn-deal rounded-pill btn-sm">
+								<button class="btn btn-deal rounded-pill btn-sm "> 
 									<i class="bi bi-send mx-1"></i>
 									Publier la réponse
 								</button>
