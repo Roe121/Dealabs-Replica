@@ -48,18 +48,13 @@ class DealRepository extends ServiceEntityRepository
     {
         $queryBuilder = $this->createQueryBuilder('d')
             ->leftJoin('d.categories', 'c') 
-            ->addSelect('c'); 
+            ->addSelect('c')
+            ->orderBy('d.createdAt', 'DESC');
 
         
         if (isset($criteria['name'])) {
             $queryBuilder->andWhere('d.name LIKE :name')
                 ->setParameter('name', $criteria['name']);
-        }
-
-        
-        if (isset($criteria['enable'])) {
-            $queryBuilder->andWhere('d.enable = :enable')
-                ->setParameter('enable', $criteria['enable']);
         }
 
         

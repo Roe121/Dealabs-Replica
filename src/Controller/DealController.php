@@ -4,15 +4,19 @@ namespace App\Controller;
 
 use App\Entity\Comment;
 use App\Entity\Deal;
+use App\Enum\DealStatusEnum;
 use App\Form\CommentType;
+use App\Form\DealType;
 use App\Repository\CategoryRepository;
 use App\Repository\DealRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 final class DealController extends AbstractController
 {
@@ -23,7 +27,6 @@ final class DealController extends AbstractController
 
         $hotestDeals = $dealRepository->findHotestDeals(3);
 
-        $filter = $request->query->get('filter', 'all');
         $categoryId = $request->query->get('category');
         $searchTerm = $request->query->get('q', '');
 
@@ -39,17 +42,10 @@ final class DealController extends AbstractController
             $criteria['name'] = '%' . $searchTerm . '%';
         }
 
-        if ($filter === 'enabled') {
-            $criteria['enable'] = true;
-        } elseif ($filter === 'disabled') {
-            $criteria['enable'] = false;
-        }
-
         $deals = $dealRepository->findByCriteria($criteria);
 
         return $this->render('deal/index.html.twig', [
             'deals' => $deals,
-            'filter' => $filter,
             'searchTerm' => $searchTerm,
             'hotestDeals' => $hotestDeals,
         ]);
@@ -67,5 +63,29 @@ final class DealController extends AbstractController
             'deal' => $deal,
             'relatedDeals' => $relatedDeals,
         ]);
+    }
+
+
+    #[Route('/deal_new', name: 'deal_new')]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    public function new(Request $request, EntityManagerInterface $em, Security $security): Response
+    {
+        $deal = new Deal();
+        $form = $this->createForm(DealType::class, $deal);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $deal->setStatus(DealStatusEnum::PENDING); // Statut par défaut
+            $deal->setUser($security->getUser()); // Associer le deal à l'utilisateur connecté
+            $em->persist($deal);
+            $em->flush();
+
+            return $this->redirectToRoute('user_show', ['id' => $deal->getUser()->getId()]);
+        }
+
+        return $this->render('deal/new.html.twig', [
+            'form' => $form->createView(),
+        ]);
+
     }
 }

@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h2 class="text-center">Ajouter un Deal</h2>
+        {{ form_start(form) }}
+            <button class="btn btn-primary rounded-pill" type="submit">Ajouter</button>
+        {{ form_end(form) }}
+    </div>
+
+{% endblock %}

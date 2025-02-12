@@ -49,7 +49,7 @@
 
 		<!-- Deals publiés -->
 		<div id="deals" class="tab-content d-none mb-4">
-			{% for deal in user.deals %}
+			{% for deal in user.deals|reverse %}
 				{% include 'partials/deal/_deal_card.html.twig' %}
 			{% else %}
 				<p>Aucun deal publié.</p>

@@ -38,7 +38,7 @@ class DealFixtures extends Fixture implements DependentFixtureInterface
         ['Barre de son Bose 700', 'Son immersif avec Dolby Atmos et design premium.', 649.99, 799.99, 'https://www.example.com/deal/10','https://static.fnac-static.com/multimedia/Images/FR/NR/ce/6d/11/17919438/1505-1/tsp20240528104044/Barre-de-son-Bose-Smart-Ultra-Soundbar-Dolby-Atmos-Noir-Module-de-baes-Bose-700-Noir-Paire-d-enceintes-Arriere-Bose-Surround-700-Noir.jpg'],
     ];
 
-    foreach ($dealsData as $index => [$name, $description, $price, $originalPrice, $dealUrl, $imageUrl]) {
+    foreach ($dealsData as $index => [$name, $description, $price, $originalPrice, $url, $imageUrl]) {
         $deal = new Deal();
         $deal->setName($name);
         $deal->setDescription($description);
@@ -46,7 +46,7 @@ class DealFixtures extends Fixture implements DependentFixtureInterface
         $deal->setOriginalPrice($originalPrice);
         $deal->addCategory($index % 2 === 0 ? $category1 : $category2);
         $deal->setEnable(true);
-        $deal->setDealUrl($dealUrl);
+        $deal->setUrl($url);
         $deal->setImage($imageUrl);
         $deal->setStatus(DealStatusEnum::ACTIVE);
         $deal->setHotScore(mt_rand(10, 100));

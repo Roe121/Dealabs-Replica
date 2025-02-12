@@ -80,6 +80,8 @@ class Deal
 
     public function __construct()
     {
+        $this->enable = true;
+        $this->hotScore = 0;
         $this->categories = new ArrayCollection();
         $this->comments = new ArrayCollection();
     }
@@ -259,12 +261,12 @@ class Deal
         return $this;
     }
 
-    public function getDealUrl(): ?string
+    public function getUrl(): ?string
     {
         return $this->url;
     }
 
-    public function setDealUrl(string $url): static
+    public function setUrl(string $url): static
     {
         $this->url = $url;
 
