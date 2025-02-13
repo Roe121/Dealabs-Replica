@@ -8,7 +8,9 @@
 
 	<!-- Image du deal -->
 	<div class="me-3">
-		<img src="{{ deal.image }}" alt="Deal Image" class="img-fluid rounded" style="width: 202px; height: 202px; object-fit: cover; border-radius: 12px;">
+		{% if deal.image %}
+    		<img src="{{ asset('images/deals/' ~ deal.image) }}" alt="Image du deal" class="img-fluid card-rounded-border" style="width: 202px; height: 202px; object-fit: cover; border-radius: 12px;">
+		{% endif %}	
 	</div>
 
 	<!-- Contenu du deal -->

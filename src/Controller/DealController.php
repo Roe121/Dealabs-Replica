@@ -75,12 +75,14 @@ final class DealController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $deal->setStatus(DealStatusEnum::PENDING); // Statut par défaut
-            $deal->setUser($security->getUser()); // Associer le deal à l'utilisateur connecté
+            $deal->setStatus(DealStatusEnum::ACTIVE); 
+            $deal->setUser($security->getUser()); 
             $em->persist($deal);
             $em->flush();
 
-            return $this->redirectToRoute('user_show', ['id' => $deal->getUser()->getId()]);
+            $this->addFlash('success', 'Deal créé avec succès');
+
+            return $this->redirectToRoute('deal_list');
         }
 
         return $this->render('deal/new.html.twig', [

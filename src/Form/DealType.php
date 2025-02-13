@@ -10,6 +10,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class DealType extends AbstractType
 {
@@ -28,7 +29,7 @@ class DealType extends AbstractType
             // ->add('enable')
             ->add('originalPrice')
             ->add('url')
-            ->add('image')
+            // ->add('image')
             ->add('startAt', null, [
                 'widget' => 'single_text'
             ])
@@ -51,6 +52,12 @@ class DealType extends AbstractType
                 'class' => Merchant::class,
                 'choice_label' => 'id',
             ])
+            ->add('imageFile', VichImageType::class, [
+                'required' => false,
+                'label' => 'Image du deal',
+                'allow_delete' => true,
+                'download_uri' => true,
+            ]);
         ;
     }
 

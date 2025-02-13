@@ -40,7 +40,7 @@
 					
 					{% for deal in hotestDeals %}
 						<div class="d-flex align-items-center mb-3">
-							<img src="{{ deal.image }}" alt="Hot Deal Image" class="rounded" style="width: 84px; height: 84px; object-fit: cover; border-radius: 8px;">
+							<img src="{{ asset('images/deals/' ~ deal.image) }}" alt="Hot Deal Image" class="rounded" style="width: 84px; height: 84px; object-fit: cover; border-radius: 8px;">
 							<div class="ms-3 w-100">
 
 								<h6 class="mb-0">
@@ -62,7 +62,7 @@
 						<h5 class="mb-3">Activité</h5>
 						{% for comment in app.user.comments|slice(0,5) %}
 							<div class="d-flex align-items-center mb-2">
-								<img src="{{ comment.deal.image }}" alt="Activity Deal" class="rounded" style="width: 54px; height: 54px; object-fit: cover;">
+								<img src="{{ asset('images/deals/' ~ comment.deal.image) }}" alt="Activity Deal" class="rounded" style="width: 54px; height: 54px; object-fit: cover;">
 								<div class="ms-2">
 									<small class="text-muted">Vous avez commenté le deal</small>
 									<a href="{{ path('deal_show', {'id': comment.deal.id}) }}" class="d-block text-black text-decoration-none small">{{ comment.deal.name }}</a>

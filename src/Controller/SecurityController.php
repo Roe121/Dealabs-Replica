@@ -24,6 +24,7 @@ class SecurityController extends AbstractController
             $this->addFlash('error', 'Identifiants incorrects. Veuillez réessayer.');
         }
 
+
         return $this->redirectToRoute('deal_list');
     }
 
