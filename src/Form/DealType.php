@@ -17,54 +17,57 @@ class DealType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name')
-            ->add('description')
-            // ->add('createdAt', null, [
-            //     'widget' => 'single_text'
-            // ])
-            // ->add('updatedAt', null, [
-            //     'widget' => 'single_text'
-            // ])
-            ->add('price')
-            // ->add('enable')
-            ->add('originalPrice')
-            ->add('url')
-            // ->add('image')
-            ->add('startAt', null, [
-                'widget' => 'single_text'
-            ])
-            ->add('expiredAt', null, [
-                'widget' => 'single_text'
-            ])
-            // ->add('status')
-            // ->add('hotScore')
-            ->add('deliveryPrice')
-            ->add('categories', EntityType::class, [
-                'class' => Category::class,
-                'choice_label' => 'id',
-                'multiple' => true,
-            ])
-            // ->add('user', EntityType::class, [
-            //     'class' => User::class,
-            //     'choice_label' => 'id',
-            // ])
-            ->add('merchant', EntityType::class, [
-                'class' => Merchant::class,
-                'choice_label' => 'id',
-            ])
-            ->add('imageFile', VichImageType::class, [
-                'required' => false,
-                'label' => 'Image du deal',
-                'allow_delete' => true,
-                'download_uri' => true,
-            ]);
-        ;
-    }
+    ->add('name', null, [
+        'attr' => ['placeholder' => 'Nom du deal'],
+        'label' => 'Nom du deal',
 
-    public function configureOptions(OptionsResolver $resolver): void
-    {
-        $resolver->setDefaults([
-            'data_class' => Deal::class,
-        ]);
-    }
+    ])
+    ->add('description', null, [
+        'attr' => ['placeholder' => 'Description'],
+        'label' => 'Description',
+
+    ])
+    ->add('price', null, [
+        'attr' => ['placeholder' => 'Prix'],
+        'label' => 'Prix',
+    ])
+    ->add('originalPrice', null, [
+        'attr' => ['placeholder' => 'Prix original'],
+        'label' => 'Prix original',
+    ])
+    ->add('url', null, [
+        'attr' => ['placeholder' => 'Lien du deal'],
+        'label' => 'Lien du deal',
+    ])
+    ->add('startAt', null, [
+        'widget' => 'single_text',
+        'label' => 'Date de début',
+    ])
+    ->add('expiredAt', null, [
+        'widget' => 'single_text',
+        'label' => 'Date d\'expiration',
+    ])
+    ->add('deliveryPrice', null, [
+        'attr' => ['placeholder' => 'Frais de livraison'],
+        'label' => 'Frais de livraison',
+    ])
+    ->add('categories', EntityType::class, [
+        'label' => 'Nom du deal',
+        'class' => Category::class,
+        'choice_label' => 'name',
+        'multiple' => true,
+    ])
+    ->add('merchant', EntityType::class, [
+        'class' => Merchant::class,
+        'choice_label' => 'name',
+    ])
+    ->add('imageFile', VichImageType::class, [
+        'required' => false,
+        'label' => 'Image du deal',
+        'allow_delete' => true,
+        'download_uri' => true,
+        'attr' => ['class' => 'form-control-file']
+    ]);
+}
+
 }

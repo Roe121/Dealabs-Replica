@@ -70,6 +70,7 @@ final class DealController extends AbstractController
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function new(Request $request, EntityManagerInterface $em, Security $security): Response
     {
+        
         $deal = new Deal();
         $form = $this->createForm(DealType::class, $deal);
         $form->handleRequest($request);
@@ -80,7 +81,7 @@ final class DealController extends AbstractController
             $em->persist($deal);
             $em->flush();
 
-            $this->addFlash('success', 'Deal créé avec succès');
+            $this->addFlash('success', 'Deal Publié avec succès');
 
             return $this->redirectToRoute('deal_list');
         }

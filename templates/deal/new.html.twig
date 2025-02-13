@@ -1,13 +1,139 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div class="container mt-5">
-        <h2 class="text-center">Ajouter un Deal</h2>
-        <div class="card p-4 shadow">
-            {{ form_start(form) }}
-                {{ form_widget(form) }}
-                <button class="btn btn-primary rounded-pill mt-3" type="submit">Ajouter</button>
-            {{ form_end(form) }}
-        </div>
-    </div>
+	<div class="container mt-5 w-60 mx-auto">
+		<div class="card p-5 my-4 rounded-card-border border-0 container gap-2 ">
+			<h2 class="text-center mb-4">Publier un nouveau Deal</h2>
+
+			{{ form_start(form) }}
+
+			<div class="card rounded-card-border p-4 mb-4 shadow-sm">
+				<h4 class="mb-3">
+					<i class="bi bi-card-text"></i>
+					Informations principales</h4>
+				<div class="mb-3">
+					{{ form_label(form.name, null, {'label_attr': {'class': 'form-label'}}) }}
+					<div class="input-group">
+						{{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+					</div>
+					{{ form_errors(form.name) }}
+				</div>
+				<div class="mb-3">
+					{{ form_label(form.description, null, {'label_attr': {'class': 'form-label'}}) }}
+					<div class="input-group">
+						{{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
+					</div>
+					{{ form_errors(form.description) }}
+				</div>
+			</div>
+
+			<div class="card rounded-card-border p-4 mb-4">
+				<h4 class="mb-3 ">
+					<i class="bi bi-cash"></i>
+					Prix</h4>
+				<div class="row mb-3">
+					<div class="col-md-4">
+						{{ form_label(form.price, null, {'label_attr': {'class': 'form-label'}}) }}
+						<div class="input-group">
+							{{ form_widget(form.price, {'attr': {'class': 'form-control'}}) }}
+						</div>
+						{{ form_errors(form.price) }}
+					</div>
+					<div class="col-md-4">
+						{{ form_label(form.originalPrice, null, {'label_attr': {'class': 'form-label'}}) }}
+						<div class="input-group">
+							{{ form_widget(form.originalPrice, {'attr': {'class': 'form-control'}}) }}
+						</div>
+						{{ form_errors(form.originalPrice) }}
+					</div>
+					<div class="col-md-4">
+						{{ form_label(form.deliveryPrice, null, {'label_attr': {'class': 'form-label'}}) }}
+						<div class="input-group">
+							{{ form_widget(form.deliveryPrice, {'attr': {'class': 'form-control'}}) }}
+						</div>
+						{{ form_errors(form.deliveryPrice) }}
+					</div>
+				</div>
+			</div>
+
+
+			<div class="card rounded-card-border p-4 mb-4">
+				<h4 class="mb-3 ">
+					<i class="bi bi-calendar"></i>
+					Dates</h4>
+				<div class="row mb-3">
+					<div class="col-md-6">
+						{{ form_label(form.startAt, null, {'label_attr': {'class': 'form-label'}}) }}
+						<div class="input-group">
+							{{ form_widget(form.startAt, {'attr': {'class': 'form-control'}}) }}
+						</div>
+						{{ form_errors(form.startAt) }}
+					</div>
+					<div class="col-md-6">
+						{{ form_label(form.expiredAt, null, {'label_attr': {'class': 'form-label'}}) }}
+						<div class="input-group">
+							{{ form_widget(form.expiredAt, {'attr': {'class': 'form-control'}}) }}
+						</div>
+						{{ form_errors(form.expiredAt) }}
+					</div>
+				</div>
+			</div>
+
+			<div class="card rounded-card-border p-4 mb-4">
+
+				<h4 class="mb-3 ">
+					<i class="bi bi-link-45deg"></i>
+					Lien</h4>
+				<div class="mb-3">
+					{{ form_label(form.url, null, {'label_attr': {'class': 'form-label'}}) }}
+					<div class="input-group">
+						{{ form_widget(form.url, {'attr': {'class': 'form-control'}}) }}
+					</div>
+					{{ form_errors(form.url) }}
+				</div>
+			</div>
+
+			<div class="card rounded-card-border p-4 mb-4">
+
+				<h4 class="mb-3">
+					<i class="bi bi-tags"></i>
+					Catégories et Marchand</h4>
+				<div class="row mb-3">
+					<div class="col-md-6">
+						{{ form_label(form.categories, null, {'label_attr': {'class': 'form-label'}}) }}
+						<div class="input-group">
+							{{ form_widget(form.categories, {'attr': {'class': 'form-select'}}) }}
+						</div>
+						{{ form_errors(form.categories) }}
+					</div>
+					<div class="col-md-6">
+						{{ form_label(form.merchant, null, {'label_attr': {'class': 'form-label'}}) }}
+						<div class="input-group">
+							{{ form_widget(form.merchant, {'attr': {'class': 'form-select'}}) }}
+						</div>
+						{{ form_errors(form.merchant) }}
+					</div>
+				</div>
+			</div>
+
+			<div class="card rounded-card-border p-4 mb-4">
+
+				<h4 class="mb-3">
+					<i class="bi bi-image"></i>
+					Image</h4>
+				<div class="mb-3">
+					{{ form_label(form.imageFile, null, {'label_attr': {'class': 'form-label'}}) }}
+					<div class="input-group">
+						{{ form_widget(form.imageFile, {'attr': {'class': 'form-control'}}) }}
+					</div>
+					{{ form_errors(form.imageFile) }}
+				</div>
+			</div>
+
+			<button class="btn btn-deal rounded-pill mt-3 w-25 mx-auto d-block" type="submit">
+            <i class="bi bi-plus-lg me-1"></i>
+            Ajouter</button>
+			{{ form_end(form) }}
+		</div>
+	</div>
 {% endblock %}
