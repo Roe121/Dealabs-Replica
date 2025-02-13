@@ -51,11 +51,9 @@ class DealType extends AbstractType
         'attr' => ['placeholder' => 'Frais de livraison'],
         'label' => 'Frais de livraison',
     ])
-    ->add('categories', EntityType::class, [
-        'label' => 'Nom du deal',
+    ->add('category', EntityType::class, [
         'class' => Category::class,
         'choice_label' => 'name',
-        'multiple' => true,
     ])
     ->add('merchant', EntityType::class, [
         'class' => Merchant::class,

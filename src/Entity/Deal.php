@@ -36,12 +36,9 @@ class Deal
     #[ORM\Column]
     private ?float $price = null;
 
-    #[ORM\Column]
-    private ?bool $enable = null;
-
-    #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'deals')]
-    #[ORM\JoinTable(name: 'deal_category')]  
-    private iterable $categories;
+    #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'deals')]
+    #[ORM\JoinColumn]
+    private Category $category;
 
     #[ORM\ManyToOne(inversedBy: 'deals')]
     #[ORM\JoinColumn(nullable: false)]
@@ -86,9 +83,8 @@ class Deal
 
     public function __construct()
     {
-        $this->enable = true;
+        $this->status = DealStatusEnum::PENDING;
         $this->hotScore = 0;
-        $this->categories = new ArrayCollection();
         $this->comments = new ArrayCollection();
     }
 
@@ -157,18 +153,6 @@ class Deal
         return $this;
     }
 
-    public function isEnable(): ?bool
-    {
-        return $this->enable;
-    }
-
-    public function setEnable(bool $enable): static
-    {
-        $this->enable = $enable;
-
-        return $this;
-    }
-
     #[ORM\PrePersist]
     public function prePersist(): void
     {
@@ -181,23 +165,14 @@ class Deal
         $this->updatedAt = new \DateTime();
     }
 
-    public function getCategories(): iterable
+    public function getCategory(): ?Category
     {
-        return $this->categories;
+        return $this->category;
     }
 
-    public function addCategory(Category $category): static
+    public function setCategory(?Category $category): static
     {
-        if (!$this->categories->contains($category)) {
-            $this->categories[] = $category;
-        }
-
-        return $this;
-    }
-
-    public function removeCategory(Category $category): static
-    {
-        $this->categories->removeElement($category);
+        $this->category = $category;
 
         return $this;
     }

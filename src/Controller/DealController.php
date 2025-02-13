@@ -2,17 +2,14 @@
 
 namespace App\Controller;
 
-use App\Entity\Comment;
 use App\Entity\Deal;
 use App\Enum\DealStatusEnum;
-use App\Form\CommentType;
 use App\Form\DealType;
 use App\Repository\CategoryRepository;
 use App\Repository\DealRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -20,6 +17,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 final class DealController extends AbstractController
 {
+
 
     #[Route('/deal_list', name: 'deal_list', methods: ['GET'])]
     public function list(Request $request, DealRepository $dealRepository, CategoryRepository $categoryRepository): Response
@@ -56,8 +54,8 @@ final class DealController extends AbstractController
     {
         $deal = $dealRepository->find($id);
 
-        $categories = $deal->getCategories();
-        $relatedDeals = $dealRepository->findRelatedDealsByCategories($categories, $deal->getId());
+        $category = $deal->getCategory();
+        $relatedDeals = $dealRepository->findRelatedDealsBycategory($category, $deal->getId());
 
         return $this->render('deal/show.html.twig', [
             'deal' => $deal,
@@ -76,7 +74,6 @@ final class DealController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $deal->setStatus(DealStatusEnum::ACTIVE); 
             $deal->setUser($security->getUser()); 
             $em->persist($deal);
             $em->flush();

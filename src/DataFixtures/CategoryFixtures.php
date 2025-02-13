@@ -9,25 +9,30 @@ use Doctrine\Persistence\ObjectManager;
 class CategoryFixtures extends Fixture
 {
 
-    public const CATEGORY_REFERENCE_1 = 'Technologie';
-    public const CATEGORY_REFERENCE_2 = 'Home';
 
     public function load(ObjectManager $manager): void
     {
-        $tech = new Category();
-        $tech->setName('Technologie');
-        $manager->persist($tech);
-        
-        // Ajouter une référence pour DealFixtures
-        $this->addReference(self::CATEGORY_REFERENCE_1, $tech); // Store reference
+        $data = [
+            ['name' => 'Technologie'],
+            ['name' => 'Maison'],
+            ['name' => 'Mode'],
+            ['name' => 'Voyage'],
+            ['name' => 'Sport'],
+            ['name' => 'Culture'],
+            ['name' => 'Beauté'],
+            ['name' => 'Alimentation'],
+            ['name' => 'Enfants'],
+            ['name' => 'Animaux'],
+        ];
+
+        foreach ($data as $index => $item) {
+            $category = new Category();
+            $category->setName($item['name']);
+            $this->addReference('category_' . $index, $category);
+            $manager->persist($category);
+        }
 
 
-
-        $home = new Category();
-        $home->setName('Maison');
-        $manager->persist($home);
-        
-        $this->addReference(self::CATEGORY_REFERENCE_2, $home);
 
         $manager->flush();
     }

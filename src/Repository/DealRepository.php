@@ -47,7 +47,7 @@ class DealRepository extends ServiceEntityRepository
     public function findByCriteria(array $criteria)
     {
         $queryBuilder = $this->createQueryBuilder('d')
-            ->leftJoin('d.categories', 'c') 
+            ->leftJoin('d.category', 'c') 
             ->addSelect('c')
             ->orderBy('d.createdAt', 'DESC');
 
@@ -67,27 +67,27 @@ class DealRepository extends ServiceEntityRepository
     }
 
 
-    public function findRelatedDealsByCategories($categories, $currentDealId, $limit = 6)
+    public function findRelatedDealsByCategory($category, $currentDealId, $limit = 6)
     {
         $qb = $this->createQueryBuilder('d')
-            ->innerJoin('d.categories', 'c') // Association avec la table des catégories
-            ->where('c IN (:categories)')
+            ->innerJoin('d.category', 'c') // Association avec la table des catégories
+            ->where('c = :category') // Comparaison directe avec la catégorie
             ->andWhere('d.id != :currentDealId') // Exclure le deal actuel
-            ->setParameter('categories', $categories)
+            ->setParameter('category', $category) // Utiliser un seul objet Category
             ->setParameter('currentDealId', $currentDealId)
             ->setMaxResults($limit)
             ->orderBy('d.createdAt', 'DESC');
-
+    
         return $qb->getQuery()->getResult();
     }
 
     public function findHotestDeals($limit)
     {
-        $activeStatus = DealStatusEnum::ACTIVE;
+        //$activeStatus = DealStatusEnum::ACTIVE;
 
         $qb = $this->createQueryBuilder('d')
-            ->where('d.status = :activeStatus')
-            ->setParameter('activeStatus', $activeStatus)
+            //->where('d.status = :activeStatus')
+            //->setParameter('activeStatus', $activeStatus)
             ->orderBy('d.hotScore', 'DESC')
             ->setMaxResults($limit);
 

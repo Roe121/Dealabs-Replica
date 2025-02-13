@@ -24,6 +24,7 @@ security:
                 default_target_path: deal_list
                 enable_csrf: true
                 failure_forward: true
+                csrf_token_id: authenticate
             logout:
                 path: app_logout
                 target: deal_list  

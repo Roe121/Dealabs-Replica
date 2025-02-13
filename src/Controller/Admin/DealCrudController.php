@@ -30,12 +30,10 @@ class DealCrudController extends AbstractCrudController
             DateTimeField::new('updatedAt')->hideOnForm(),
             MoneyField::new('price')->setCurrency('EUR')->setStoredAsCents(false),
 
-            AssociationField::new('categories')
-                ->setFormTypeOption('choice_label', 'name')
-                ->formatValue(function ($value, $entity) {
-                    return implode(', ', $entity->getCategories()->map(function ($category) {
-                    return $category->getName();
-                    })->toArray());
+            AssociationField::new('category')
+            ->setFormTypeOption('choice_label', 'name')
+            ->formatValue(function ($value, $entity) {
+                return $entity->getCategory() ? $entity->getCategory()->getName() : '';
             }),
 
             BooleanField::new('isEnable'),

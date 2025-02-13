@@ -17,7 +17,7 @@ class Category
     #[ORM\Column(length: 255, unique: true)]
     private ?string $name = null;
 
-    #[ORM\ManyToMany(targetEntity: Deal::class, mappedBy: 'categories')]
+    #[ORM\OneToMany(targetEntity: Deal::class, mappedBy: 'category',orphanRemoval: true)]
     private iterable $deals;
 
     public function __construct()
@@ -51,7 +51,7 @@ class Category
     {
         if (!$this->deals->contains($deal)) {
             $this->deals[] = $deal;
-            $deal->addCategory($this);
+            $deal->setCategory($this);
         }
 
         return $this;
@@ -61,7 +61,7 @@ class Category
     {
         if ($this->deals->contains($deal)) {
             $this->deals->removeElement($deal);
-            $deal->removeCategory($this);
+            $deal->setCategory(null);
         }
 
         return $this;

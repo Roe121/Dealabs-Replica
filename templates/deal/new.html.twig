@@ -99,12 +99,12 @@
 					<i class="bi bi-tags"></i>
 					Catégories et Marchand</h4>
 				<div class="row mb-3">
-					<div class="col-md-6">
-						{{ form_label(form.categories, null, {'label_attr': {'class': 'form-label'}}) }}
+					<div class="col-md-6 mb-3">
+						{{ form_label(form.category, null, {'label_attr': {'class': 'form-label'}}) }}
 						<div class="input-group">
-							{{ form_widget(form.categories, {'attr': {'class': 'form-select'}}) }}
+							{{ form_widget(form.category, {'attr': {'class': 'form-select'}}) }}
 						</div>
-						{{ form_errors(form.categories) }}
+						{{ form_errors(form.category) }}
 					</div>
 					<div class="col-md-6">
 						{{ form_label(form.merchant, null, {'label_attr': {'class': 'form-label'}}) }}
@@ -130,9 +130,13 @@
 				</div>
 			</div>
 
+            <i class="bi bi-info-circle me-2"></i> <small class="text-muted"> Votre Deal sera dabord soumis à une validation avant d'être publié sur le site.</small>
+
+
+
 			<button class="btn btn-deal rounded-pill mt-3 w-25 mx-auto d-block" type="submit">
-            <i class="bi bi-plus-lg me-1"></i>
-            Ajouter</button>
+				<i class="bi bi-plus-lg me-1"></i>
+				Publier</button>
 			{{ form_end(form) }}
 		</div>
 	</div>

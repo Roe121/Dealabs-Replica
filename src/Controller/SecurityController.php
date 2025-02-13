@@ -18,11 +18,11 @@ class SecurityController extends AbstractController
 
         if ($this->getUser()) {
             return $this->redirectToRoute('deal_list'); // Redirige si déjà connecté
-        }
+        } 
 
         if ($error) {
-            $this->addFlash('error', 'Identifiants incorrects. Veuillez réessayer.');
-        }
+            $this->addFlash('error', $error->getMessage());
+        } 
 
 
         return $this->redirectToRoute('deal_list');

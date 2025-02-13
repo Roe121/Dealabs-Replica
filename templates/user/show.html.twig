@@ -24,7 +24,7 @@
 
 		<!-- Activité des commentaires -->
 		<div id="activities" class="tab-content mb-4">
-			{% for comment in user.comments %}
+			{% for comment in user.comments|reverse %}
 				<div class="rounded-card-border bg-white d-flex align-items-center p-3 my-2">
 					<img src="{{ asset('images/deals/' ~ comment.deal.image) }}" alt="Deal Image" class="img-fluid rounded border me-2" style="width: 60px; height: 60px; object-fit: cover; border-radius: 12px;">
 

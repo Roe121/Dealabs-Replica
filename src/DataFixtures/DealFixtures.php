@@ -20,9 +20,6 @@ class DealFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
 {
-    // Retrieve references to Category entities
-    $category1 = $this->getReference(CategoryFixtures::CATEGORY_REFERENCE_1, Category::class);
-    $category2 = $this->getReference(CategoryFixtures::CATEGORY_REFERENCE_2, Category::class);
 
     $dealsData = [
         ['PlayStation 5 Slim + 2ème manette', 'Nouvelle version plus fine de la PS5 avec une manette supplémentaire.', 499.99, 549.99, 'https://www.example.com/deal/0','ps5.jpg'],
@@ -33,7 +30,7 @@ class DealFixtures extends Fixture implements DependentFixtureInterface
         ['Aspirateur robot Roomba i7+', 'Aspirateur intelligent avec vidage automatique.', 599.99, 799.99, 'https://www.example.com/deal/5','EMEA_i7plus_m6g_3.jpg'],
         ['Montre connectée Apple Watch Series 9', 'Modèle GPS + Cellular, autonomie améliorée.', 429.99, 529.99, 'https://www.example.com/deal/6','LD0006065182_0006065187.jpg'],
         ['Nintendo Switch OLED + Zelda TOTK', 'Pack console OLED avec le jeu Zelda : Tears of the Kingdom.', 359.99, 399.99, 'https://www.example.com/deal/7','nintendo-switch-oled-zelda-edition.jpg'],
-        ['Écran gaming 27" 165Hz ASUS', 'Moniteur IPS avec faible latence pour les gamers.', 249.99, 329.99, 'https://www.example.com/deal/8','8157lxvy2XL.jpg'],
+        ['Écran gaming 27" 165Hz ASUS', 'Le moniteur IPS avec faible latence est conçu spécialement pour les gamers à la recherche d\'une expérience de jeu fluide et réactive. Grâce à la technologie IPS (In-Plane Switching), il offre des couleurs vives et des angles de vision larges, permettant de profiter d\'une image nette et précise sous n\'importe quel angle. La faible latence, quant à elle, garantit des temps de réponse ultra-rapides, éliminant pratiquement les décalages et les flous de mouvement, essentiels pour les jeux compétitifs où chaque milliseconde compte. Ce moniteur est le choix idéal pour les joueurs souhaitant allier performance et qualité visuelle sans compromis.', 249.99, 329.99, 'https://www.example.com/deal/8','8157lxvy2XL.jpg'],
         ['PC Portable Gaming ACER NITRO i7 12gen RTX 4060', 'Laptop gamer avec processeur i7 et carte graphique RTX 4060.', 1299.99, 1599.99, 'https://www.example.com/deal/9','acer-nitro.jpg'],
         ['Barre de son Bose 700', 'Son immersif avec Dolby Atmos et design premium.', 649.99, 799.99, 'https://www.example.com/deal/10','barre-son.jpg'],
     ];
@@ -44,11 +41,9 @@ class DealFixtures extends Fixture implements DependentFixtureInterface
         $deal->setDescription($description);
         $deal->setPrice($price);
         $deal->setOriginalPrice($originalPrice);
-        $deal->addCategory($index % 2 === 0 ? $category1 : $category2);
-        $deal->setEnable(true);
+        $deal->setCategory($this->getReference('category_' . rand(0, 9), Category::class));
         $deal->setUrl($url);
         $deal->setImage($imageUrl);
-        $deal->setStatus(DealStatusEnum::ACTIVE);
         $deal->setHotScore(mt_rand(10, 100));
         $deal->setDeliveryPrice($index % 2 === 0 ? 0 : rand(1, 4));
         $deal->setMerchant($this->getReference('merchant_' . rand(0, 4), Merchant::class));
