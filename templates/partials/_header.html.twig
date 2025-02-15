@@ -38,15 +38,11 @@
 					</ul>
 				</li>
 				{% if app.user %}
-					<button class=" rounded-pill btn-deal-outline d-flex align-items-center px-3" data-bs-toggle="modal" data-bs-target="#newPostModal">
-						<i class="bi bi-plus-lg me-2"></i>
-						Poster
-					</button>
 					<li class="nav-item dropdown">
 						<a
 							class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 							<!-- ✅ Image de profil à la place de l'icône -->
-							<img src="{{ app.user.image }}" alt="Profil" class="rounded-circle me-2" style="width: 24px; height: 24px; object-fit: cover;">
+							<img src="{{ app.user.image ?: asset('images/user/blank-pp.png') }}" alt="Avatar" class="avatar mx-2" style="width: 24px; height: 24px; border-radius: 50%;">
 							{{ app.user.username }}
 						</a>
 						<ul class="dropdown-menu rounded-card-border" aria-labelledby="userDropdown">
@@ -62,6 +58,10 @@
 							</li>
 						</ul>
 					</li>
+					<button class=" rounded-pill btn-deal-outline d-flex align-items-center px-3" data-bs-toggle="modal" data-bs-target="#newPostModal">
+						<i class="bi bi-plus-lg me-2"></i>
+						Poster
+					</button>
 				{% else %}
 					<li class="nav-item d-flex align-items-center">
 						<i class="bi bi-person"></i>

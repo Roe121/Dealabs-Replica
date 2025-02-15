@@ -4,7 +4,7 @@
 	<!-- Section mettre un commentaire si l'utilisateur est connecté -->
 	{% if app.user %}
 		<div class="d-flex align-items-start my-3">
-			<img src="{{app.user.image}}" alt="Avatar" class="rounded-circle" style="width: 54px; height: 54px; object-fit: cover;">
+			<img src="{{ app.user.image ?: asset('images/user/blank-pp.png') }}" alt="Avatar" class="rounded-circle" style="width: 54px; height: 54px; object-fit: cover;">
 
 			<div class="ms-3 flex-grow-1">
 				<form method="post" action="{{ path('comment_add', {'id': deal.id}) }}">
@@ -41,7 +41,7 @@
 					name="Comment-header" class="d-flex justify-content-between align-items-start my-3 rounded">
 					<!-- Avatar -->
 					<img
-					src="{{ comment.user.image }}" alt="Avatar" class="rounded-circle me-2" style="width: 54px; height: 54px; object-fit: cover;">
+					src="{{ comment.user.image ?: asset('images/user/blank-pp.png') }}" alt="Avatar" class="rounded-circle me-2" style="width: 54px; height: 54px; object-fit: cover;">
 
 					<!-- User Info -->
 					<div class="flex-grow-1">
@@ -141,7 +141,7 @@
 								<div id="comment-{{ reply.id }}" class="d-flex align-items-start mt-2">
 									<div class="ms-2 w-100">
 										<div name="Reply-header" class="d-flex justify-content-between align-items-start my-3 rounded">
-										    <img src="{{ reply.user.image }}" alt="Avatar" class="rounded-circle me-2" style="width: 40px; height: 40px; object-fit: cover;">
+										    <img src="{{ reply.user.image ?: asset('images/user/blank-pp.png') }}" alt="Avatar" class="rounded-circle me-2" style="width: 40px; height: 40px; object-fit: cover;">
                                             <div class="flex-grow-1">
 												<strong>{{ comment.user.username }}</strong>
 												<p class="text-muted mb-1" style="font-size: 0.85rem;">{{ comment.createdAt|ago }}</p>

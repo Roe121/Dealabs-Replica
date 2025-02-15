@@ -60,6 +60,7 @@
 				{% if app.user %}
 					<div class="card p-3 shadow-sm rounded-card-border ">
 						<h5 class="mb-3">Activité</h5>
+						{% if app.user.comments|length > 0 %}
 						{% for comment in app.user.comments|slice(0,5) %}
 							<div class="d-flex align-items-center mb-2">
 								<img src="{{ asset('images/deals/' ~ comment.deal.image) }}" alt="Activity Deal" class="rounded" style="width: 54px; height: 54px; object-fit: cover;">
@@ -72,6 +73,11 @@
 								</div>
 							</div>
 						{% endfor %}
+						{% else %}
+							<div class=" text-center" role="alert">
+								<p>Vous n'avez pas encore d'activité. </p>
+							</div>
+						{% endif %}
 					</div>
 				{% endif %}
 
