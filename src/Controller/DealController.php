@@ -2,11 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Category;
 use App\Entity\Deal;
-use App\Enum\DealStatusEnum;
+use App\Entity\Vote;
 use App\Form\DealType;
-use App\Repository\CategoryRepository;
 use App\Repository\DealRepository;
+use App\Services\UserService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -18,12 +19,18 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 final class DealController extends AbstractController
 {
 
+    private UserService $userService;
+
+    public function __construct(UserService $userService)
+    {
+        $this->userService = $userService;
+    }
 
     #[Route('/deal_list', name: 'deal_list', methods: ['GET'])]
-    public function list(Request $request, DealRepository $dealRepository, CategoryRepository $categoryRepository): Response
+    public function list(Request $request, EntityManagerInterface $em): Response
     {
 
-        $hotestDeals = $dealRepository->findHotestDeals(3);
+        $hotestDeals = $em->getRepository(Deal::class)->findHotestDeals(3);
 
         $categoryId = $request->query->get('category');
         $searchTerm = $request->query->get('q', '');
@@ -31,7 +38,7 @@ final class DealController extends AbstractController
         $criteria = [];
 
         if ($categoryId) {
-            $category = $categoryRepository->find($categoryId);
+            $category = $em->getRepository(Category::class)->find($categoryId);
             $criteria['category'] = $category;
         }
 
@@ -40,12 +47,21 @@ final class DealController extends AbstractController
             $criteria['name'] = '%' . $searchTerm . '%';
         }
 
-        $deals = $dealRepository->findByCriteria($criteria);
+        $userVotes = $em->getRepository(Vote::class)->findBy(['user' => $this->getUser()]);
+
+        $votesMap = [];
+        foreach ($userVotes as $vote) {
+            $votesMap[$vote->getDeal()->getId()] = $vote;
+        }
+
+        $deals = $em->getRepository(Deal::class)->findBy($criteria, ['createdAt' => 'DESC']);
+
 
         return $this->render('deal/index.html.twig', [
             'deals' => $deals,
             'searchTerm' => $searchTerm,
             'hotestDeals' => $hotestDeals,
+            'user_votes' => $votesMap,
         ]);
     }
 
@@ -56,10 +72,13 @@ final class DealController extends AbstractController
 
         $category = $deal->getCategory();
         $relatedDeals = $dealRepository->findRelatedDealsBycategory($category, $deal->getId());
+        $user = $this->getUser();
+        $user_vote = $this->userService->getUserVoteForDeal($user, $deal);
 
         return $this->render('deal/show.html.twig', [
             'deal' => $deal,
             'relatedDeals' => $relatedDeals,
+            'user_vote' => $user_vote,
         ]);
     }
 
@@ -68,13 +87,13 @@ final class DealController extends AbstractController
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function new(Request $request, EntityManagerInterface $em, Security $security): Response
     {
-        
+
         $deal = new Deal();
         $form = $this->createForm(DealType::class, $deal);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $deal->setUser($security->getUser()); 
+            $deal->setUser($security->getUser());
             $em->persist($deal);
             $em->flush();
 
@@ -86,6 +105,5 @@ final class DealController extends AbstractController
         return $this->render('deal/new.html.twig', [
             'form' => $form->createView(),
         ]);
-
     }
 }

@@ -53,10 +53,12 @@ class DealType extends AbstractType
     ])
     ->add('category', EntityType::class, [
         'class' => Category::class,
+        'label' => 'Catégorie',
         'choice_label' => 'name',
     ])
     ->add('merchant', EntityType::class, [
         'class' => Merchant::class,
+        'label' => 'Marchand',
         'choice_label' => 'name',
     ])
     ->add('imageFile', VichImageType::class, [

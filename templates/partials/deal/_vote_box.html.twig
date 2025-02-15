@@ -1,0 +1,53 @@
+{% set user_vote = user_vote is defined ? user_vote : (user_votes[deal.id] ?? null) %}
+
+
+<div class="d-flex flex-column align-items-center me-3">
+    <button class="btn btn-outline-primary btn-sm vote-button {% if user_vote is not null and user_vote.type == 1 %}active{% endif %}" 
+            data-deal-id="{{ deal.id }}" data-type="1"
+            onclick="handleVote(this)">▲</button>
+            
+    <span class="fw-bold text-danger" id="hotScore-{{ deal.id }}">{{ deal.hotScore }}°</span>
+    
+    <button class="btn btn-outline-danger btn-sm vote-button {% if user_vote is not null and user_vote.type == -1 %}active{% endif %}" 
+            data-deal-id="{{ deal.id }}" data-type="-1"
+            onclick="handleVote(this)">▼</button>
+</div>
+
+<script>
+function handleVote(button) {
+    const dealId = button.dataset.dealId;
+    const type = parseInt(button.dataset.type);
+
+    const isCurrentlyActive = button.classList.contains('active');  // Vérifie si le bouton est déjà actif
+
+    fetch(`/vote/${dealId}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: data.error,
+                confirmButtonColor: "#00a1bf",
+
+            });
+        } else {
+            document.getElementById(`hotScore-${dealId}`).textContent = `${data.hotScore}°`;
+            
+            document.querySelectorAll(`.vote-button[data-deal-id='${dealId}']`).forEach(btn => btn.classList.remove('active'));
+            
+            // Ajoute la classe active seulement si ce n'est pas une annulation
+            if (!isCurrentlyActive) {
+                button.classList.add('active');
+            }
+        }
+    });
+}
+
+
+
+</script>

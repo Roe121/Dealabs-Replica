@@ -81,11 +81,15 @@ class Deal
     #[ORM\Column(nullable: true)]
     private ?int $deliveryPrice = null;
 
+    #[ORM\OneToMany(targetEntity: Vote::class, mappedBy: 'deal', orphanRemoval: true)]
+    private Collection $votes;
+
     public function __construct()
     {
         $this->status = DealStatusEnum::PENDING;
         $this->hotScore = 0;
         $this->comments = new ArrayCollection();
+        $this->votes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -330,12 +334,17 @@ class Deal
     {
         $this->imageFile = $imageFile;
         if ($imageFile) {
-            $this->updatedAt = new \DateTime(); 
+            $this->updatedAt = new \DateTime();
         }
     }
 
     public function getImageFile(): ?File
     {
         return $this->imageFile;
+    }
+
+    public function getVotes(): Collection
+    {
+        return $this->votes;
     }
 }

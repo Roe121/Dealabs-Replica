@@ -1,5 +1,9 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}
+	Publier un Deal
+{% endblock %}
+
 {% block body %}
 	<div class="container mt-5 w-60 mx-auto">
 		<div class="card p-5 my-4 rounded-card-border border-0 container gap-2 ">
@@ -98,7 +102,7 @@
 				<h4 class="mb-3">
 					<i class="bi bi-tags"></i>
 					Catégories et Marchand</h4>
-				<div class="row mb-3">
+				<div class="row ">
 					<div class="col-md-6 mb-3">
 						{{ form_label(form.category, null, {'label_attr': {'class': 'form-label'}}) }}
 						<div class="input-group">

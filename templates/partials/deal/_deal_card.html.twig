@@ -1,10 +1,6 @@
 <div class="card shadow-sm rounded-card-border p-3 d-flex flex-row align-items-center mb-2">
 	<!-- Vote Box -->
-	<div class="d-flex flex-column align-items-center me-3">
-		<button class="btn btn-deal btn-sm">▲</button>
-		<span class="fw-bold text-danger">{{ deal.hotScore }}°</span>
-		<button class="btn btn-deal btn-sm">▼</button>
-	</div>
+	{% include 'partials/deal/_vote_box.html.twig' %}
 
 	<!-- Image du deal -->
 	<div class="me-3">
