@@ -11,7 +11,7 @@ class UserService
 {
     public function __construct(private EntityManagerInterface $em) {}
 
-   public function getUserVoteForDeal(User $user, Deal $deal): ?Vote
+   public function getUserVoteForDeal(?User $user, Deal $deal): ?Vote
     {
         return $this->em->getRepository(Vote::class)->findOneBy(['user' => $user, 'deal' => $deal]);
     }

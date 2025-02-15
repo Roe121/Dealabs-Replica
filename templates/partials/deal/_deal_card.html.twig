@@ -1,24 +1,28 @@
-<div class="card shadow-sm rounded-card-border p-3 d-flex flex-row align-items-center mb-2">
-	<!-- Vote Box -->
-	{% include 'partials/deal/_vote_box.html.twig' %}
+<div
+	class="card shadow-sm rounded-card-border p-3 d-flex flex-row align-items-center mb-2">
 
 	<!-- Image du deal -->
 	<div class="me-3">
 		{% if deal.image %}
-    		<img src="{{ asset('images/deals/' ~ deal.image) }}" alt="Image du deal" class="img-fluid card-rounded-border" style="width: 202px; height: 202px; object-fit: cover; border-radius: 12px;">
-		{% endif %}	
+			<img src="{{ asset('images/deals/' ~ deal.image) }}" alt="Image du deal" class="img-fluid card-rounded-border" style="width: 202px; height: 202px; object-fit: cover; border-radius: 12px;">
+		{% endif %}
 	</div>
 
 	<!-- Contenu du deal -->
 	<div class="flex-grow-1">
-		<div class="d-flex justify-content-between align-items-center mb-1">
-			<a href="{{ path('deal_show', {'id': deal.id}) }}" class="text-black text-decoration-none fw-bold fs-5">
-				{{ deal.name }}
-			</a>
+		<div
+			class="d-flex justify-content-between align-items-center mb-1">
+			<!-- Vote Box -->
+			{% include 'partials/deal/_vote_box.html.twig' %}
 			<span class="badge bg-light text-grey ms-2">
-				Posté {{ deal.createdAt|ago }}
+				Posté
+				{{ deal.createdAt|ago }}
 			</span>
 		</div>
+
+		<a href="{{ path('deal_show', {'id': deal.id}) }}" class="text-black text-decoration-none fs-4">
+			{{ deal.name }}
+		</a>
 
 		<p class="text-muted small mb-1 d-flex align-items-center flex-wrap gap-2">
 			<strong class="text-danger fs-4">{{ deal.price }}€</strong>
@@ -28,7 +32,7 @@
 			<i class="bi bi-truck text-secondary"></i>
 			<span>{{ deal.deliveryPrice is null or deal.deliveryPrice == 0 ? 'Gratuit' : deal.deliveryPrice ~ '€' }}</span>
 
-			<span>| Disponible chez 
+			<span>| Disponible chez
 				<a href="{{ path('merchant_show', {'id': deal.merchant.id}) }}" class="fw-bold text-black text-decoration-none">
 					{{ deal.merchant.name }}
 				</a>

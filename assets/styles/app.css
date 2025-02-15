@@ -9,6 +9,7 @@ body {
   background-color: rgb(238, 238, 238);
 }
 
+
 a {
 	color: var(--theme-color);
 	text-decoration: none;
@@ -225,3 +226,6 @@ a:hover {
 
 
 /* __________________________________________________________Style de la page de création de deal_____________________________________________________ */
+
+
+.i-bolder { -webkit-text-stroke: 1px; }
