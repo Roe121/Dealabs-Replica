@@ -54,7 +54,7 @@ final class DealController extends AbstractController
             $votesMap[$vote->getDeal()->getId()] = $vote;
         }
 
-        $deals = $em->getRepository(Deal::class)->findBy($criteria, ['createdAt' => 'DESC']);
+        $deals = $em->getRepository(Deal::class)->findByCriteria($criteria);
 
 
         return $this->render('deal/index.html.twig', [

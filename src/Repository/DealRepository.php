@@ -47,20 +47,20 @@ class DealRepository extends ServiceEntityRepository
     public function findByCriteria(array $criteria)
     {
         $queryBuilder = $this->createQueryBuilder('d')
-            ->leftJoin('d.category', 'c') 
+            ->leftJoin('d.category', 'c')
             ->addSelect('c')
             ->orderBy('d.createdAt', 'DESC');
 
-        
+
         if (isset($criteria['name'])) {
             $queryBuilder->andWhere('d.name LIKE :name')
                 ->setParameter('name', $criteria['name']);
         }
 
-        
+
         if (isset($criteria['category'])) {
             $queryBuilder->andWhere('c.id = :category')
-                ->setParameter('category', $criteria['category']->getId()); 
+                ->setParameter('category', $criteria['category']->getId());
         }
 
         return $queryBuilder->getQuery()->getResult();
@@ -77,7 +77,7 @@ class DealRepository extends ServiceEntityRepository
             ->setParameter('currentDealId', $currentDealId)
             ->setMaxResults($limit)
             ->orderBy('d.createdAt', 'DESC');
-    
+
         return $qb->getQuery()->getResult();
     }
 
