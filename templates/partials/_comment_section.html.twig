@@ -95,14 +95,14 @@
 				<p id="comment-content-{{ comment.id }}" class="comment-content mb-1">{{ comment.content }}</p>
 				<!-- Section des actions (votes + réponse) -->
 				<div class="d-flex align-items-center mt-2 gap-3">
-					<button class="btn btn-sm btn-outline-success vote-btn" data-id="{{ comment.id }}" data-type="upvote">
+					<button class="btn btn-sm btn-outline-success vote-btn {% if user_comment_votes[comment.id] is defined and user_comment_votes[comment.id].type == 1 %}active{% endif %}" data-id="{{ comment.id }}" data-type="upvote">
 						<i class="bi bi-hand-thumbs-up"></i>
-						<span class="positive-votes">{{ comment.positiveVotes }}</span>
+						<span class="positive-votes" data-id="{{ comment.id }}">{{ comment.positiveVotes }}</span>
 					</button>
 
-					<button class="btn btn-sm btn-outline-danger vote-btn" data-id="{{ comment.id }}" data-type="downvote">
+					<button class="btn btn-sm btn-outline-danger vote-btn {% if user_comment_votes[comment.id] is defined and user_comment_votes[comment.id].type == -1 %}active{% endif %}" data-id="{{ comment.id }}" data-type="downvote">
 						<i class="bi bi-hand-thumbs-down"></i>
-						<span class="negative-votes">{{ comment.negativeVotes }}</span>
+						<span class="negative-votes" data-id="{{ comment.id }}">{{ comment.negativeVotes }}</span>
 					</button>
 
 					<button class="btn btn-sm btn-outline-secondary reply-btn" data-id="{{ comment.id }}">
@@ -116,14 +116,16 @@
 					class="ms-5 p-2">
 					<!-- Formulaire de réponse (toujours présent) -->
 					<form method="post" action="{{ path('comment_add', {'id': deal.id}) }}">
-						<div class="reply-form my-3 text-end" id="reply-form-{{ comment.id }}" style="display: none;">
+						<div class="reply-form my-3" id="reply-form-{{ comment.id }}" style="display: none;">
 							{% if app.user %}
 								<textarea name="content" class="form-control mb-2" rows="2" placeholder="Votre réponse..." required></textarea>
 								<input type="hidden" name="parent_id" value="{{ comment.id }}">
-								<button class="btn btn-deal rounded-pill btn-sm "> 
+								<div class="d-flex justify-content-end">
+								<button class="btn btn-deal rounded-pill btn-sm ">
 									<i class="bi bi-send mx-1"></i>
 									Publier la réponse
 								</button>
+								</div>
 							{% else %}
 								<p class="text-muted">
 									Veuillez
@@ -141,8 +143,8 @@
 								<div id="comment-{{ reply.id }}" class="d-flex align-items-start mt-2">
 									<div class="ms-2 w-100">
 										<div name="Reply-header" class="d-flex justify-content-between align-items-start my-3 rounded">
-										    <img src="{{ reply.user.image ?: asset('images/user/blank-pp.png') }}" alt="Avatar" class="rounded-circle me-2" style="width: 40px; height: 40px; object-fit: cover;">
-                                            <div class="flex-grow-1">
+											<img src="{{ reply.user.image ?: asset('images/user/blank-pp.png') }}" alt="Avatar" class="rounded-circle me-2" style="width: 40px; height: 40px; object-fit: cover;">
+											<div class="flex-grow-1">
 												<strong>{{ comment.user.username }}</strong>
 												<p class="text-muted mb-1" style="font-size: 0.85rem;">{{ comment.createdAt|ago }}</p>
 											</div>

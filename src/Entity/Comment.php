@@ -49,12 +49,16 @@ class Comment
     #[ORM\Column]
     private ?int $negativeVotes = 0;
 
+    #[ORM\OneToMany(targetEntity: CommentVote::class, mappedBy: 'comment', orphanRemoval: true)]
+    private Collection $votes;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
         $this->positiveVotes = 0;
         $this->negativeVotes = 0;
         $this->comments = new ArrayCollection();
+        $this->votes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -198,5 +202,13 @@ class Comment
         $this->negativeVotes = $negativeVotes;
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, CommentVote>
+     */
+    public function getVotes(): Collection
+    {
+        return $this->votes;
     }
 }

@@ -15,7 +15,7 @@ window.addEventListener("turbo:load", function () {
   });
 
 
-// Afficher le commentaire ciblé par son ID dans l'URL
+  // Afficher le commentaire ciblé par son ID dans l'URL
   const urlParams = new URLSearchParams(window.location.search);
   if (urlParams.has("comment")) {
     const commentId = urlParams.get("comment");
@@ -139,5 +139,43 @@ window.enableEdit = function (event, commentId) {
         commentElement.innerHTML = currentContent;
     });
 }
+
+
+// Fonction pour voter pour un commentaire
+window.addEventListener("turbo:load", function () {
+    document.querySelectorAll('.vote-btn').forEach(button => {
+        button.addEventListener('click', function () {
+            const commentId = this.dataset.id;
+            const type = this.dataset.type === "upvote" ? 1 : -1;
+            const isCurrentlyActive = this.classList.contains('active');
+
+            fetch(`/vote/comment/${commentId}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ type })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    Swal.fire({icon: 'error', title: 'Oops...', text: data.error, confirmButtonColor: "#00a1bf"});
+                } else {
+                    // Met à jour les compteurs
+                    document.querySelector(`.positive-votes[data-id="${commentId}"]`).textContent = data.positiveVotes;
+                    document.querySelector(`.negative-votes[data-id="${commentId}"]`).textContent = data.negativeVotes;
+
+                    // Retire la classe 'active' de tous les boutons de ce commentaire
+                    document.querySelectorAll(`.vote-btn[data-id="${commentId}"]`).forEach(btn => btn.classList.remove('active'));
+
+                    // Ajoute la classe 'active' seulement si ce n'est pas une annulation
+                    if (!isCurrentlyActive) {
+                        this.classList.add('active');
+                    }
+                }
+            })
+            .catch(error => console.error('Erreur:', error));
+        });
+    });
+  });
+
 
 

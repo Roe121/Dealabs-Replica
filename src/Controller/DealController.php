@@ -3,12 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\Category;
+use App\Entity\CommentVote;
 use App\Entity\Deal;
 use App\Entity\Vote;
 use App\Form\DealType;
 use App\Repository\DealRepository;
 use App\Services\UserService;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,17 +22,19 @@ final class DealController extends AbstractController
 {
 
     private UserService $userService;
+    private EntityManagerInterface $em;
 
-    public function __construct(UserService $userService)
+    public function __construct(UserService $userService, EntityManagerInterface $em)
     {
         $this->userService = $userService;
+        $this->em = $em;
     }
 
     #[Route('/deal_list', name: 'deal_list', methods: ['GET'])]
-    public function list(Request $request, EntityManagerInterface $em): Response
+    public function list(Request $request): Response
     {
 
-        $hotestDeals = $em->getRepository(Deal::class)->findHotestDeals(3);
+        $hotestDeals = $this->em->getRepository(Deal::class)->findHotestDeals(3);
 
         $categoryId = $request->query->get('category');
         $searchTerm = $request->query->get('q', '');
@@ -38,7 +42,7 @@ final class DealController extends AbstractController
         $criteria = [];
 
         if ($categoryId) {
-            $category = $em->getRepository(Category::class)->find($categoryId);
+            $category = $this->em->getRepository(Category::class)->find($categoryId);
             $criteria['category'] = $category;
         }
 
@@ -47,14 +51,14 @@ final class DealController extends AbstractController
             $criteria['name'] = '%' . $searchTerm . '%';
         }
 
-        $userVotes = $em->getRepository(Vote::class)->findBy(['user' => $this->getUser()]);
+        $userVotes = $this->em->getRepository(Vote::class)->findBy(['user' => $this->getUser()]);
 
         $votesMap = [];
         foreach ($userVotes as $vote) {
             $votesMap[$vote->getDeal()->getId()] = $vote;
         }
 
-        $deals = $em->getRepository(Deal::class)->findByCriteria($criteria);
+        $deals = $this->em->getRepository(Deal::class)->findByCriteria($criteria);
 
 
         return $this->render('deal/index.html.twig', [
@@ -66,7 +70,7 @@ final class DealController extends AbstractController
     }
 
     #[Route('/deal/{id}', name: 'deal_show')]
-    public function show(int $id, DealRepository $dealRepository): Response
+    public function show(int $id, DealRepository $dealRepository,EntityManagerInterface $em): Response
     {
         $deal = $dealRepository->find($id);
 
@@ -75,10 +79,18 @@ final class DealController extends AbstractController
         $user = $this->getUser();
         $user_vote = $this->userService->getUserVoteForDeal($user, $deal);
 
+        $userCommentVotes = $em->getRepository(CommentVote::class)->findBy(['user' => $this->getUser()]);
+
+        $votesMap = [];
+        foreach ($userCommentVotes as $vote) {
+            $votesMap[$vote->getComment()->getId()] = $vote;
+        }
+
         return $this->render('deal/show.html.twig', [
             'deal' => $deal,
             'relatedDeals' => $relatedDeals,
             'user_vote' => $user_vote,
+            'user_comment_votes' => $votesMap,
         ]);
     }
 
