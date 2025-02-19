@@ -44,12 +44,15 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
+
+        $user = $token->getUser();
         // getFlashBag affiche une erreur mais fonctionne
         $request->getSession()->getFlashBag()->add('success', 'Connexion réussie !');
 
         if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
             return new RedirectResponse($targetPath);
         }
+
         return new RedirectResponse($this->urlGenerator->generate('deal_list'));
     }
 

@@ -35,9 +35,6 @@ class DealCrudController extends AbstractCrudController
             ->formatValue(function ($value, $entity) {
                 return $entity->getCategory() ? $entity->getCategory()->getName() : '';
             }),
-
-            BooleanField::new('isEnable'),
-
         ];
     }
     

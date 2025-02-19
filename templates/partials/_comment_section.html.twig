@@ -50,66 +50,12 @@
 					</div>
 
 					<!-- Dropdown Menu -->
-					<div class="dropdown">
-						<button class="btn btn-light border-0 rounded-circle" type="button" id="dropdownMenuButton{{ comment.id }}" data-bs-toggle="dropdown" aria-expanded="false">
-							<i class="bi bi-three-dots"></i>
-							<!-- Bootstrap Icons -->
-						</button>
-						<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton{{ comment.id }}">
-							<li>
-								<a class="dropdown-item" href="#" onclick="copyLink(event, '{{ comment.id }}')">
-									<i class="bi bi-clipboard-check mx-2"></i>
-									Copier le lien du commentaire
-								</a>
-							</li>
+					{% include 'partials/comment/_comment_dropdown.html.twig' with {'comment': comment} %}
 
-							{% if app.user == comment.user %}
-								<!-- Afficher les options "Modifier" et "Supprimer" si l'utilisateur est l'auteur du commentaire -->
-								<li>
-									<a class="dropdown-item" href="#" onclick="enableEdit(event,'{{ comment.id }}')">
-										<input type="hidden" id="csrf_token" value="{{ csrf_token('edit_comment') }}">
-										<i class="bi bi-pencil mx-2"></i>
-										Modifier
-									</a>
-								</li>
-								<li>
-									<form action="{{ path('comment_delete', { 'id': comment.id }) }}" method="POST" style="display: inline;">
-										<button type="submit" class="dropdown-item text-danger" style="background: none; border: none;">
-											<i class="bi bi-trash mx-2"></i>
-											Supprimer
-										</button>
-									</form>
-								</li>
-							{% else %}
-								<!-- Afficher l'option "Signaler" si l'utilisateur n'est pas l'auteur du commentaire -->
-								<li>
-									<a class="dropdown-item text-danger" href="#">
-										<i class="bi bi-flag mx-2"></i>
-										Signaler
-									</a>
-								</li>
-							{% endif %}
-						</ul>
-					</div>
 				</div>
 				<p id="comment-content-{{ comment.id }}" class="comment-content mb-1">{{ comment.content }}</p>
 				<!-- Section des actions (votes + réponse) -->
-				<div class="d-flex align-items-center mt-2 gap-3">
-					<button class="btn btn-sm btn-outline-success vote-btn {% if user_comment_votes[comment.id] is defined and user_comment_votes[comment.id].type == 1 %}active{% endif %}" data-id="{{ comment.id }}" data-type="upvote">
-						<i class="bi bi-hand-thumbs-up"></i>
-						<span class="positive-votes" data-id="{{ comment.id }}">{{ comment.positiveVotes }}</span>
-					</button>
-
-					<button class="btn btn-sm btn-outline-danger vote-btn {% if user_comment_votes[comment.id] is defined and user_comment_votes[comment.id].type == -1 %}active{% endif %}" data-id="{{ comment.id }}" data-type="downvote">
-						<i class="bi bi-hand-thumbs-down"></i>
-						<span class="negative-votes" data-id="{{ comment.id }}">{{ comment.negativeVotes }}</span>
-					</button>
-
-					<button class="btn btn-sm btn-outline-secondary reply-btn" data-id="{{ comment.id }}">
-						<i class="bi bi-reply-fill"></i>
-						Répondre
-					</button>
-				</div>
+				{% include 'partials/comment/_comment_reactions_bar.html.twig' with {'comment': comment} %}
 
 				<!-- 🔽 Sous-commentaires (Réponses) -->
 				<div
@@ -150,50 +96,11 @@
 											</div>
 
 											<!-- Dropdown Menu -->
-											<div class="dropdown">
-												<button class="btn btn-light border-0 rounded-circle" type="button" id="dropdownMenuButton{{ reply.id }}" data-bs-toggle="dropdown" aria-expanded="false">
-													<i class="bi bi-three-dots"></i>
-													<!-- Bootstrap Icons -->
-												</button>
-												<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton{{ reply.id }}">
-													<li>
-														<a class="dropdown-item" href="#" onclick="copyLink(event, '{{ reply.id }}')">
-															<i class="bi bi-clipboard-check mx-2"></i>
-															Copier le lien du commentaire
-														</a>
-													</li>
-
-													{% if app.user == reply.user %}
-														<!-- Afficher les options "Modifier" et "Supprimer" si l'utilisateur est l'auteur du commentaire -->
-														<li>
-															<a class="dropdown-item" href="#" onclick="enableEdit(event,'{{ reply.id }}')">
-																<input type="hidden" id="csrf_token" value="{{ csrf_token('edit_comment') }}">
-																<i class="bi bi-pencil mx-2"></i>
-																Modifier
-															</a>
-														</li>
-														<li>
-															<form action="{{ path('comment_delete', { 'id': reply.id }) }}" method="POST" style="display: inline;">
-																<button type="submit" class="dropdown-item text-danger" style="background: none; border: none;">
-																	<i class="bi bi-trash mx-2"></i>
-																	Supprimer
-																</button>
-															</form>
-														</li>
-													{% else %}
-														<!-- Afficher l'option "Signaler" si l'utilisateur n'est pas l'auteur du commentaire -->
-														<li>
-															<a class="dropdown-item text-danger" href="#">
-																<i class="bi bi-flag mx-2"></i>
-																Signaler
-															</a>
-														</li>
-													{% endif %}
-												</ul>
-											</div>
+											{% include 'partials/comment/_comment_dropdown.html.twig' with {'comment': reply} %}
 
 										</div>
 										<p id="comment-content-{{ reply.id }}" class="mb-1">{{ reply.content }}</p>
+										{% include 'partials/comment/_comment_reactions_bar.html.twig' with {'comment': reply} %}
 									</div>
 								</div>
 							{% endfor %}

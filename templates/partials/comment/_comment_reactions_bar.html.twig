@@ -1,0 +1,18 @@
+<div class="d-flex align-items-center mt-2 gap-3">
+	<button class="btn btn-sm btn-outline-success vote-btn {% if user_comment_votes[comment.id] is defined and user_comment_votes[comment.id].type == 1 %}active{% endif %}" data-id="{{ comment.id }}" data-type="upvote">
+		<i class="bi bi-hand-thumbs-up"></i>
+		<span class="positive-votes" data-id="{{ comment.id }}">{{ comment.positiveVotes }}</span>
+	</button>
+
+	<button class="btn btn-sm btn-outline-danger vote-btn {% if user_comment_votes[comment.id] is defined and user_comment_votes[comment.id].type == -1 %}active{% endif %}" data-id="{{ comment.id }}" data-type="downvote">
+		<i class="bi bi-hand-thumbs-down"></i>
+		<span class="negative-votes" data-id="{{ comment.id }}">{{ comment.negativeVotes }}</span>
+	</button>
+
+    {% if comment.parent is null %}
+	<button class="btn btn-sm btn-outline-secondary reply-btn" data-id="{{ comment.id }}">
+		<i class="bi bi-reply-fill"></i>
+		Répondre
+	</button>
+    {% endif %}
+</div>
