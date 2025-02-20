@@ -45,7 +45,9 @@
 
 					<!-- User Info -->
 					<div class="flex-grow-1">
-						<strong>{{ comment.user.username }}</strong>
+						<a href="{{ path('user_show', {'id': comment.user.id}) }}" class="text-black text-decoration-none fw-bold">
+							{{ comment.user.username }}
+						</a>
 						<p class="text-muted mb-1" style="font-size: 0.85rem;">{{ comment.createdAt|ago }}</p>
 					</div>
 
@@ -67,10 +69,10 @@
 								<textarea name="content" class="form-control mb-2" rows="2" placeholder="Votre réponse..." required></textarea>
 								<input type="hidden" name="parent_id" value="{{ comment.id }}">
 								<div class="d-flex justify-content-end">
-								<button class="btn btn-deal rounded-pill btn-sm ">
-									<i class="bi bi-send mx-1"></i>
-									Publier la réponse
-								</button>
+									<button class="btn btn-deal rounded-pill btn-sm ">
+										<i class="bi bi-send mx-1"></i>
+										Publier la réponse
+									</button>
 								</div>
 							{% else %}
 								<p class="text-muted">
@@ -91,8 +93,10 @@
 										<div name="Reply-header" class="d-flex justify-content-between align-items-start my-3 rounded">
 											<img src="{{ reply.user.image ?: asset('images/user/blank-pp.png') }}" alt="Avatar" class="rounded-circle me-2" style="width: 40px; height: 40px; object-fit: cover;">
 											<div class="flex-grow-1">
-												<strong>{{ comment.user.username }}</strong>
-												<p class="text-muted mb-1" style="font-size: 0.85rem;">{{ comment.createdAt|ago }}</p>
+												<a href="{{ path('user_show', {'id': reply.user.id}) }}" class="text-black text-decoration-none fw-bold">
+													{{ reply.user.username }}
+												</a>
+												<p class="text-muted mb-1" style="font-size: 0.85rem;">{{ reply.createdAt|ago }}</p>
 											</div>
 
 											<!-- Dropdown Menu -->

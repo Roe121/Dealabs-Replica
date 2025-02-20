@@ -32,7 +32,7 @@ window.addEventListener("turbo:load", function () {
 });
 
 window.copyLink = function (event, commentId) {
-  event.preventDefault(); // Empêche la redirection de l'élément <a>
+  event.preventDefault(); 
 
   const link = window.location.href + "#comment-" + commentId;
   console.log("Lien du commentaire :", link);

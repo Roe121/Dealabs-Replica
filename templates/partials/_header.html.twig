@@ -51,6 +51,12 @@
 									<i class="bi bi-person-lines-fill me-2"></i>Mon profil
 								</a>
 							</li>
+							<li>
+								<a class="dropdown-item" href="{{ path('gif_search') }}">
+									<i class="bi bi-filetype-gif"></i>
+									Recherche de GIFs
+								</a>
+							</li>
 							{% if is_granted('ROLE_ADMIN') %}
 								<li>
 									<a class="dropdown-item" href="{{ path('admin') }}">

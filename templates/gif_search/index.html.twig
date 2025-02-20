@@ -1,0 +1,63 @@
+{# templates/gif_search/index.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Recherche de GIFs
+{% endblock %}
+
+{% block body %}
+
+	<form class="centered-form" action="{{ path('gif_search') }}" method="get">
+    	<h1>Recherche de GIFs</h1>
+		<input type="text" name="query" value="{{ query }}" placeholder="Rechercher des GIFs..."/>
+		<button type="submit">Rechercher</button>
+	</form>
+
+	{% if gifs is not empty %}
+		<div class="gif-results my-4">
+			{% for gif in gifs %}
+				<div class="gif-item">
+					<img src="{{ gif.media_formats.tinygif.url }}" alt="GIF"/>
+				</div>
+			{% endfor %}
+		</div>
+	{% elseif query %}
+		<p>Aucun GIF trouvé pour "{{ query }}".</p>
+	{% endif %}
+{% endblock %}
+
+{% block stylesheets %}
+	{{ parent() }}
+	<style>
+		.gif-results {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 20px; /* Ajoute un espacement entre les GIFs */
+			justify-content: center; /* Centre les GIFs dans la page */
+		}
+
+		.gif-item {
+			width: 200px; /* Définit une largeur fixe pour chaque image */
+			height: auto;
+			border-radius: 8px; /* Facultatif : Ajoute des coins arrondis */
+			overflow: hidden;
+		}
+
+		.gif-item img {
+			width: 100%; /* L'image occupe toute la largeur du conteneur */
+			height: auto;
+			display: block; /* Retirer les espaces sous les images */
+		}
+
+        .centered-form {
+            display: flex;
+            justify-content: center;  /* Centrer horizontalement */
+            align-items: center;      /* Centrer verticalement */         /* Prendre toute la hauteur de la fenêtre */
+            flex-direction: column;   /* Placer les éléments (input et bouton) en colonne */
+        }
+
+        .centered-form input, .centered-form button {
+            margin: 5px;  /* Ajoute un peu d'espacement entre les éléments */
+        }
+	</style>
+{% endblock %}
