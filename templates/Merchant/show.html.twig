@@ -2,9 +2,54 @@
 
 {% block title %}
 	{{ merchant.name }}
-
 {% endblock %}
 
 {% block body %}
-Content of the page goes here {{ merchant.name }}
-{% endblock %}
+	<div class="profile-container w-60 mx-auto">
+			<!-- Header du profil -->
+			<div class="profile-header my-3 bg-white rounded-card-border shadow-sm text-center p-4">
+				<img class='border' src="{{ merchant.image ?: asset('images/user/blank-pp.png') }}" alt="Avatar" style="width: 100px; height: 100px; border-radius: 50%;">
+				<h2>{{ merchant.name }}</h2>
+				<p>Site web: <a href="{{ merchant.websiteUrl }}" target="_blank">{{ merchant.websiteUrl }}</a></p>
+			</div>
+
+			<!-- Onglets de navigation -->
+			<nav class="d-flex justify-content-center border-bottom pb-2 mb-3">
+				<a href="#" class="nav-link profile-nav-link active" data-target="deals">Deals</a>
+				<a href="#" class="nav-link profile-nav-link" data-target="discussions">Discussions</a>
+			</nav>
+
+
+			<!-- Deals publiés -->
+			<div id="deals" class="tab-content  mb-4">
+				{% for deal in merchant.deals|reverse %}
+					{% include 'partials/deal/_deal_card.html.twig' %}
+				{% else %}
+					<p>Aucun deal publié.</p>
+				{% endfor %}
+			</div>
+
+			<!-- Discussions crées publiés -->
+			<div id="discussions" class="tab-content d-none mb-4">
+				<p>Système de discussions en cours de développement.. 😊</p>
+			</div>
+
+		</div>
+
+		<!-- Script JavaScript pour la navigation des onglets -->
+		<script>
+			document.querySelectorAll('.profile-nav-link').forEach(link => {
+link.addEventListener('click', function (e) {
+e.preventDefault();
+
+// Gestion des classes actives pour les onglets
+document.querySelectorAll('.profile-nav-link').forEach(nav => nav.classList.remove('active'));
+this.classList.add('active');
+
+// Affichage du contenu correspondant
+document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('d-none'));
+document.getElementById(this.dataset.target).classList.remove('d-none');
+});
+});
+		</script>
+	{% endblock %}

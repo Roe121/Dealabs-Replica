@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Merchant;
+use App\Entity\Vote;
 use App\Repository\MerchantRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -24,12 +26,19 @@ final class MerchantController extends AbstractController
     // }
 
     #[Route('/Merchant/{id}', name: 'merchant_show')]
-    public function show(int $id, MerchantRepository $MerchantRepository): Response
+    public function show(int $id, MerchantRepository $MerchantRepository, EntityManagerInterface $em): Response
     {
         $merchant = $MerchantRepository->find($id);
+        $userVotes = $em->getRepository(Vote::class)->findBy(['user' => $this->getUser()]);
+
+        $votesMap = [];
+        foreach ($userVotes as $vote) {
+            $votesMap[$vote->getDeal()->getId()] = $vote;
+        }
 
         return $this->render('Merchant/show.html.twig', [
             'merchant' => $merchant,
+            'user_votes' => $votesMap,
         ]);
     }
 }
