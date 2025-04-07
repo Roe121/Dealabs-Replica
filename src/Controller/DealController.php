@@ -95,7 +95,7 @@ final class DealController extends AbstractController
     }
 
 
-    #[Route('/deal_new', name: 'deal_new')]
+    #[Route('/deal_new', name: 'deal_new', methods: ['GET', 'POST'])]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function new(Request $request, EntityManagerInterface $em, Security $security): Response
     {
@@ -113,7 +113,7 @@ final class DealController extends AbstractController
 
             return $this->redirectToRoute('deal_list');
         }
-
+        // dd($form->getErrors(true, false));
         return $this->render('deal/new.html.twig', [
             'form' => $form->createView(),
         ]);

@@ -69,6 +69,14 @@ a:hover {
   color: white;
 }
 
+input:hover, input:focus {
+  border-color: var(--theme-color);
+}
+
+input:focus {
+  box-shadow: 0 0 0 0.2rem rgba(0,161,191,.25);
+}
+
 /* __________________________________________________________Style du footer_____________________________________________________ */
 
 /* Footer général */

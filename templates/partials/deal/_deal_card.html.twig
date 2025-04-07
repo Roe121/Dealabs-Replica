@@ -4,12 +4,16 @@
 	<!-- Image du deal -->
 	<div class="me-3">
 		{% if deal.image %}
-			<img src="{{ asset('images/deals/' ~ deal.image) }}" alt="Image du deal" class="img-fluid card-rounded-border" style="width: 202px; height: 202px; object-fit: cover; border-radius: 12px;">
+			<img src="{{ asset('images/deals/' ~ deal.image) }}" alt="Image du deal" class="border img-fluid card-rounded-border" 
+			style="
+			width: {% if app.request.attributes.get('_route') == 'deal_show' %}320px{% else %}202px{% endif %};
+			height: {% if app.request.attributes.get('_route') == 'deal_show' %}320px{% else %}202px{% endif %};
+			object-fit: cover; border-radius: 12px;">
 		{% endif %}
 	</div>
 
 	<!-- Contenu du deal -->
-	<div class="flex-grow-1">
+	<div class="flex-grow-1 p-2">
 		<div
 			class="d-flex justify-content-between align-items-center mb-1">
 			<!-- Vote Box -->
